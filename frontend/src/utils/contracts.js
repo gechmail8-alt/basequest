@@ -119,14 +119,52 @@ export async function getEthPrice() {
 }
 export function ethToUsd(ethAmount, ethPrice) { return (parseFloat(ethAmount || 0) * (ethPrice || 2500)).toFixed(2); }
 
+// ── Referral code helpers ──────────────────────────────────────────────────
+export function generateReferralCode(address) {
+  if (!address || address.length < 42) return null;
+  const a = address.toLowerCase();
+  const part1 = a.slice(2, 8).toUpperCase();
+  const part2 = a.slice(-4).toUpperCase();
+  return `BQ-${part1}-${part2}`;
+}
+
+export function generateShareLink(address) {
+  const base = typeof window !== "undefined"
+    ? window.location.origin
+    : "https://basequest.netlify.app";
+  return `${base}?ref=${address}`;
+}
+
+export function parseReferralInput(input) {
+  if (!input) return null;
+  const trimmed = input.trim();
+  // Plain address
+  if (ethers.isAddress(trimmed)) return trimmed;
+  // Share link with ?ref=0x...
+  try {
+    const url     = new URL(trimmed);
+    const refAddr = url.searchParams.get("ref");
+    if (refAddr && ethers.isAddress(refAddr)) return refAddr;
+  } catch {}
+  return null;
+}
+
+export function getRefFromUrl() {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(window.location.search);
+  const ref    = params.get("ref");
+  return ref && ethers.isAddress(ref) ? ref : null;
+}
+// ──────────────────────────────────────────────────────────────────────────
+
 export const TASKS = [
-  { id: "gm",       name: "GM Base",        description: "Send a GM on-chain message",          xp: 50,  ethCost: "0.00005", icon: "☀️", daily: true,  field: null },
-  { id: "deploy",   name: "Deploy Contract", description: "Deploy a contract to Base Mainnet",   xp: 100, ethCost: "0.00005", icon: "🚀", daily: true,  field: "deployedContract", fieldLabel: "Deployed Contract Address", fieldPlaceholder: "0x..." },
-  { id: "swap",     name: "Swap on Base",    description: "Confirm a swap on Base",              xp: 75,  ethCost: "0.00005", icon: "🔄", daily: true,  field: null },
-  { id: "bridge",   name: "Bridge to Base",  description: "Bridge assets using the Base Bridge", xp: 100, ethCost: "0.00005", icon: "🌉", daily: true,  field: null },
-  { id: "game",     name: "Play Mini-Game",  description: "Enter the 5-minute prize pool game",  xp: 75,  ethCost: "0.00005", icon: "🎲", daily: true,  field: null },
-  { id: "mint",     name: "Mint NFT",        description: "Mint any NFT on Base Mainnet",        xp: 125, ethCost: "0.00005", icon: "🎨", daily: true,  field: "nftContract", fieldLabel: "NFT Contract Address", fieldPlaceholder: "0x..." },
-  { id: "referral", name: "Refer a Friend",  description: "Register a referral address",         xp: 150, ethCost: "0.00005", icon: "👥", daily: true,  field: "referred", fieldLabel: "Friend Wallet Address", fieldPlaceholder: "0x..." },
-  { id: "profile",  name: "Set Profile",     description: "Set your on-chain username",          xp: 50,  ethCost: "0.00005", icon: "🪪", daily: false, oneTime: true, field: "username", fieldLabel: "Username (max 32 chars)", fieldPlaceholder: "based_degen" },
-  { id: "streak",   name: "Streak Bonus",    description: "Auto-awarded every 7 days",           xp: 200, ethCost: "0",       icon: "🔥", daily: false, auto: true },
+  { id: "gm",       name: "GM Base",        description: "Send a GM on-chain message",           xp: 50,  ethCost: "0.00005", icon: "☀️", daily: true,  field: null },
+  { id: "deploy",   name: "Deploy Contract", description: "Deploy a contract to Base Mainnet",    xp: 100, ethCost: "0.00005", icon: "🚀", daily: true,  field: "deployedContract", fieldLabel: "Deployed Contract Address", fieldPlaceholder: "0x..." },
+  { id: "swap",     name: "Swap on Base",    description: "Confirm a swap on Base",               xp: 75,  ethCost: "0.00005", icon: "🔄", daily: true,  field: null },
+  { id: "bridge",   name: "Bridge to Base",  description: "Bridge assets using the Base Bridge",  xp: 100, ethCost: "0.00005", icon: "🌉", daily: true,  field: null },
+  { id: "game",     name: "Play Mini-Game",  description: "Enter the 5-minute prize pool game",   xp: 75,  ethCost: "0.00005", icon: "🎲", daily: true,  field: null },
+  { id: "mint",     name: "Mint NFT",        description: "Mint any NFT on Base Mainnet",         xp: 125, ethCost: "0.00005", icon: "🎨", daily: true,  field: "nftContract", fieldLabel: "NFT Contract Address", fieldPlaceholder: "0x..." },
+  { id: "referral", name: "Refer a Friend",  description: "Share your link & earn 150 XP",       xp: 150, ethCost: "0.00005", icon: "👥", daily: true,  field: "referred", fieldLabel: "Friend's Wallet Address or Share Link", fieldPlaceholder: "0x... or paste share link" },
+  { id: "profile",  name: "Set Profile",     description: "Set your on-chain username",           xp: 50,  ethCost: "0.00005", icon: "🪪", daily: false, oneTime: true, field: "username", fieldLabel: "Username (max 32 chars)", fieldPlaceholder: "based_degen" },
+  { id: "streak",   name: "Streak Bonus",    description: "Auto-awarded every 7 days",            xp: 200, ethCost: "0",       icon: "🔥", daily: false, auto: true },
 ];
