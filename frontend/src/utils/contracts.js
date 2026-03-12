@@ -67,12 +67,12 @@ export function getGameContract(s)   { if (!ADDRESSES.game)   throw new Error("V
 export function getBridgeContract(s) { if (!ADDRESSES.bridge) throw new Error("VITE_BRIDGE_CONTRACT not set"); return new ethers.Contract(ADDRESSES.bridge, BRIDGE_ABI, s); }
 
 export const LEVELS = [
-  { level: 1, name: "Newbie",  minXP: 0,     maxXP: 499,     color: "#8892a4", emoji: "🌱" },
-  { level: 2, name: "Farmer",  minXP: 500,   maxXP: 1499,    color: "#00c853", emoji: "🌾" },
-  { level: 3, name: "Builder", minXP: 1500,  maxXP: 3499,    color: "#0052ff", emoji: "🔨" },
-  { level: 4, name: "Degen",   minXP: 3500,  maxXP: 7499,    color: "#a855f7", emoji: "⚡" },
-  { level: 5, name: "OG Base", minXP: 7500,  maxXP: 14999,   color: "#00d4ff", emoji: "🔥" },
-  { level: 6, name: "Phoenix", minXP: 15000, maxXP: Infinity, color: "#f0b429", emoji: "🦅" },
+  { level: 1, name: "Newbie",  minXP: 0,     maxXP: 499,      color: "#8892a4", emoji: "🌱" },
+  { level: 2, name: "Farmer",  minXP: 500,   maxXP: 1499,     color: "#00c853", emoji: "🌾" },
+  { level: 3, name: "Builder", minXP: 1500,  maxXP: 3499,     color: "#0052ff", emoji: "🔨" },
+  { level: 4, name: "Degen",   minXP: 3500,  maxXP: 7499,     color: "#a855f7", emoji: "⚡" },
+  { level: 5, name: "OG Base", minXP: 7500,  maxXP: 14999,    color: "#00d4ff", emoji: "🔥" },
+  { level: 6, name: "Phoenix", minXP: 15000, maxXP: Infinity,  color: "#f0b429", emoji: "🦅" },
 ];
 
 export function getLevelInfo(xp) {
@@ -120,13 +120,13 @@ export async function getEthPrice() {
 export function ethToUsd(ethAmount, ethPrice) { return (parseFloat(ethAmount || 0) * (ethPrice || 2500)).toFixed(2); }
 
 export const TASKS = [
-  { id: "gm",       name: "GM Base",         description: "Send a GM on-chain message",           xp: 50,  ethCost: "0.0001", icon: "☀️",  daily: true,  field: null },
-  { id: "deploy",   name: "Deploy Contract",  description: "Deploy a contract to Base Mainnet",    xp: 100, ethCost: "0.0002", icon: "🚀",  daily: true,  field: "deployedContract", fieldLabel: "Deployed Contract Address", fieldPlaceholder: "0x..." },
-  { id: "swap",     name: "Swap on Base",     description: "Confirm a swap on Base",               xp: 75,  ethCost: "0.0001", icon: "🔄",  daily: true,  field: null },
-  { id: "bridge",   name: "Bridge to Base",   description: "Bridge assets using the Base Bridge",  xp: 100, ethCost: "0.0002", icon: "🌉",  daily: true,  field: null },
-  { id: "game",     name: "Play Mini-Game",   description: "Enter the 5-minute prize pool game",   xp: 75,  ethCost: "0.0001", icon: "🎲",  daily: true,  field: null },
-  { id: "mint",     name: "Mint NFT",         description: "Mint any NFT on Base Mainnet",         xp: 125, ethCost: "0.0001", icon: "🎨",  daily: true,  field: "nftContract", fieldLabel: "NFT Contract Address", fieldPlaceholder: "0x..." },
-  { id: "referral", name: "Refer a Friend",   description: "Register a referral address",          xp: 150, ethCost: "0.0001", icon: "👥",  daily: true,  field: "referred", fieldLabel: "Friend Wallet Address", fieldPlaceholder: "0x..." },
-  { id: "profile",  name: "Set Profile",      description: "Set your on-chain username",           xp: 50,  ethCost: "0.0001", icon: "🪪",  daily: false, oneTime: true, field: "username", fieldLabel: "Username (max 32 chars)", fieldPlaceholder: "based_degen" },
-  { id: "streak",   name: "Streak Bonus",     description: "Auto-awarded every 7 days",            xp: 200, ethCost: "0",      icon: "🔥",  daily: false, auto: true },
+  { id: "gm",       name: "GM Base",        description: "Send a GM on-chain message",          xp: 50,  ethCost: "0.00005", icon: "☀️", daily: true,  field: null },
+  { id: "deploy",   name: "Deploy Contract", description: "Deploy a contract to Base Mainnet",   xp: 100, ethCost: "0.00005", icon: "🚀", daily: true,  field: "deployedContract", fieldLabel: "Deployed Contract Address", fieldPlaceholder: "0x..." },
+  { id: "swap",     name: "Swap on Base",    description: "Confirm a swap on Base",              xp: 75,  ethCost: "0.00005", icon: "🔄", daily: true,  field: null },
+  { id: "bridge",   name: "Bridge to Base",  description: "Bridge assets using the Base Bridge", xp: 100, ethCost: "0.00005", icon: "🌉", daily: true,  field: null },
+  { id: "game",     name: "Play Mini-Game",  description: "Enter the 5-minute prize pool game",  xp: 75,  ethCost: "0.00005", icon: "🎲", daily: true,  field: null },
+  { id: "mint",     name: "Mint NFT",        description: "Mint any NFT on Base Mainnet",        xp: 125, ethCost: "0.00005", icon: "🎨", daily: true,  field: "nftContract", fieldLabel: "NFT Contract Address", fieldPlaceholder: "0x..." },
+  { id: "referral", name: "Refer a Friend",  description: "Register a referral address",         xp: 150, ethCost: "0.00005", icon: "👥", daily: true,  field: "referred", fieldLabel: "Friend Wallet Address", fieldPlaceholder: "0x..." },
+  { id: "profile",  name: "Set Profile",     description: "Set your on-chain username",          xp: 50,  ethCost: "0.00005", icon: "🪪", daily: false, oneTime: true, field: "username", fieldLabel: "Username (max 32 chars)", fieldPlaceholder: "based_degen" },
+  { id: "streak",   name: "Streak Bonus",    description: "Auto-awarded every 7 days",           xp: 200, ethCost: "0",       icon: "🔥", daily: false, auto: true },
 ];
