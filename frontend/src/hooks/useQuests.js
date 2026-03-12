@@ -18,10 +18,10 @@ try {
 export function useQuests(wallet) {
   const { address, signer, isConnected } = wallet || {};
 
-  const [profile,    setProfile]    = useState(null);
-  const [dailyTasks, setDailyTasks] = useState(null);
-  const [levelInfo,  setLevelInfo]  = useState(null);
-  const [ethPrice,   setEthPrice]   = useState(2500);
+  const [profile,     setProfile]     = useState(null);
+  const [dailyTasks,  setDailyTasks]  = useState(null);
+  const [levelInfo,   setLevelInfo]   = useState(null);
+  const [ethPrice,    setEthPrice]    = useState(2500);
   const [taskLoading, setTaskLoading] = useState({});
 
   const loadingRef = useRef(false);
@@ -111,7 +111,7 @@ export function useQuests(wallet) {
 
   const completeGM = useCallback(async () => {
     return executeTask("gm", async () =>
-      getCoreContract(signer).completeGMTask({ value: ethers.parseEther("0.0001") }),
+      getCoreContract(signer).completeGMTask({ value: ethers.parseEther("0.00005") }),
       50, "GM Base"
     );
   }, [signer, executeTask]);
@@ -119,28 +119,28 @@ export function useQuests(wallet) {
   const completeDeploy = useCallback(async (contractAddr) => {
     if (!ethers.isAddress(contractAddr)) { toast.error("Invalid contract address."); return false; }
     return executeTask("deploy", async () =>
-      getCoreContract(signer).completeDeployTask(contractAddr, { value: ethers.parseEther("0.0002") }),
+      getCoreContract(signer).completeDeployTask(contractAddr, { value: ethers.parseEther("0.00005") }),
       100, "Deploy Contract"
     );
   }, [signer, executeTask]);
 
   const completeSwap = useCallback(async () => {
     return executeTask("swap", async () =>
-      getCoreContract(signer).completeSwapTask({ value: ethers.parseEther("0.0001") }),
+      getCoreContract(signer).completeSwapTask({ value: ethers.parseEther("0.00005") }),
       75, "Swap on Base"
     );
   }, [signer, executeTask]);
 
   const completeBridge = useCallback(async () => {
     return executeTask("bridge", async () =>
-      getCoreContract(signer).completeBridgeTask({ value: ethers.parseEther("0.0002") }),
+      getCoreContract(signer).completeBridgeTask({ value: ethers.parseEther("0.00005") }),
       100, "Bridge to Base"
     );
   }, [signer, executeTask]);
 
   const completeGame = useCallback(async () => {
     return executeTask("game", async () =>
-      getCoreContract(signer).completeGameTask({ value: ethers.parseEther("0.0001") }),
+      getCoreContract(signer).completeGameTask({ value: ethers.parseEther("0.00005") }),
       75, "Mini-Game"
     );
   }, [signer, executeTask]);
@@ -149,7 +149,7 @@ export function useQuests(wallet) {
     if (!ethers.isAddress(referred)) { toast.error("Invalid wallet address."); return false; }
     if (referred.toLowerCase() === address?.toLowerCase()) { toast.error("Cannot refer yourself!"); return false; }
     return executeTask("referral", async () =>
-      getCoreContract(signer).completeReferralTask(referred, { value: ethers.parseEther("0.0001") }),
+      getCoreContract(signer).completeReferralTask(referred, { value: ethers.parseEther("0.00005") }),
       150, "Refer a Friend"
     );
   }, [signer, address, executeTask]);
@@ -158,7 +158,7 @@ export function useQuests(wallet) {
     if (!username || username.trim().length === 0) { toast.error("Username cannot be empty."); return false; }
     if (username.length > 32) { toast.error("Username too long (max 32 chars)."); return false; }
     return executeTask("profile", async () =>
-      getCoreContract(signer).completeProfileTask(username.trim(), { value: ethers.parseEther("0.0001") }),
+      getCoreContract(signer).completeProfileTask(username.trim(), { value: ethers.parseEther("0.00005") }),
       50, "Set Profile"
     );
   }, [signer, executeTask]);
@@ -166,7 +166,7 @@ export function useQuests(wallet) {
   const completeMintNFT = useCallback(async (nftContract) => {
     if (!ethers.isAddress(nftContract)) { toast.error("Invalid NFT contract address."); return false; }
     return executeTask("mint", async () =>
-      getCoreContract(signer).completeMintNFTTask(nftContract, { value: ethers.parseEther("0.0001") }),
+      getCoreContract(signer).completeMintNFTTask(nftContract, { value: ethers.parseEther("0.00005") }),
       125, "Mint NFT"
     );
   }, [signer, executeTask]);
@@ -187,4 +187,4 @@ export function useQuests(wallet) {
     completeProfile,
     completeMintNFT,
   };
-      }
+}
