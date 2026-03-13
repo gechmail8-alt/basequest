@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useWallet }     from "./hooks/useWallet";
 import { useQuests }     from "./hooks/useQuests";
 import Navbar            from "./components/Navbar";
@@ -21,7 +21,6 @@ export default function App() {
   const wallet = useWallet();
   const quests = useQuests(wallet);
 
-  // Merge userProfile into wallet so Navbar can show XP/level
   const walletWithProfile = { ...wallet, userProfile: quests.userProfile };
 
   const renderTab = () => {
@@ -43,7 +42,7 @@ export default function App() {
       fontFamily: "'Inter', sans-serif",
     }}>
 
-      {/* Navbar — gets wallet + userProfile merged */}
+      {/* Navbar */}
       <Navbar wallet={walletWithProfile} />
 
       {/* Tab bar */}
@@ -99,6 +98,41 @@ export default function App() {
       {/* Page content */}
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 16px 80px" }}>
         {renderTab()}
+      </div>
+
+      {/* Footer */}
+      <div style={{
+        borderTop:  "1px solid rgba(255,255,255,0.06)",
+        padding:    "24px 16px 100px",
+        textAlign:  "center",
+        marginTop:  "40px",
+      }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "24px", marginBottom: "12px" }}>
+          <a
+            href="https://twitter.com/Jee_phoenix"
+            target="_blank" rel="noreferrer"
+            style={{ color: "#8892a4", fontSize: "13px", fontWeight: "600", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}
+            onMouseEnter={e => e.currentTarget.style.color = "white"}
+            onMouseLeave={e => e.currentTarget.style.color = "#8892a4"}
+          >
+            🐦 @Jee_phoenix
+          </a>
+          <a
+            href="https://t.me/Jeephoenix"
+            target="_blank" rel="noreferrer"
+            style={{ color: "#8892a4", fontSize: "13px", fontWeight: "600", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}
+            onMouseEnter={e => e.currentTarget.style.color = "white"}
+            onMouseLeave={e => e.currentTarget.style.color = "#8892a4"}
+          >
+            ✈️ @Jeephoenix
+          </a>
+        </div>
+        <div style={{ color: "#4a5568", fontSize: "12px", marginBottom: "4px" }}>
+          © 2026 BaseQuest™ — All rights reserved.
+        </div>
+        <div style={{ color: "#4a5568", fontSize: "11px" }}>
+          Built on Base Mainnet 🔵
+        </div>
       </div>
 
       {/* Mobile bottom nav */}
