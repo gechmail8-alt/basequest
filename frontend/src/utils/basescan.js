@@ -9,6 +9,15 @@ async function blockscoutFetch(address) {
   return Array.isArray(data.result) ? data.result : [];
 }
 
+async function blockscoutFetchLatest(address) {
+  const url = `${BLOCKSCOUT_URL}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=desc&limit=1`;
+  const res = await fetch(url);
+  if (!res.ok) return null;
+  const data = await res.json();
+  if (!Array.isArray(data.result) || data.result.length === 0) return null;
+  return data.result[0];
+}
+
 export async function fetchTransactions(address) {
   try { return await blockscoutFetch(address); }
   catch (err) { console.warn("Blockscout fetch failed:", err.message); return []; }
@@ -46,7 +55,6 @@ export function analyzeTransactions(address, txs) {
     .slice(0, 5)
     .map(([contract, count]) => ({ contract, count }));
 
-  // ── New metrics ───────────────────────────────────────────────────────────
   // First tx on Base
   const firstTxOnBase = first ? {
     hash:      first.hash,
@@ -55,7 +63,7 @@ export function analyzeTransactions(address, txs) {
     timestamp: Number(first.timeStamp),
   } : null;
 
-  // Latest tx on Base
+  // Latest tx on Base (may be overridden by desc fetch in getWalletAnalysis)
   const latestTxOnBase = last ? {
     hash:      last.hash,
     date:      new Date(Number(last.timeStamp) * 1000).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
@@ -76,8 +84,8 @@ export function analyzeTransactions(address, txs) {
   } : null;
 
   // Smallest tx by value (non-zero only)
-  const nonZeroTxs  = txs.filter(tx => BigInt(tx.value || "0") > 0n);
-  const smallestTx  = nonZeroTxs.length > 0
+  const nonZeroTxs = txs.filter(tx => BigInt(tx.value || "0") > 0n);
+  const smallestTx = nonZeroTxs.length > 0
     ? nonZeroTxs.reduce((min, tx) => {
         const val = BigInt(tx.value || "0");
         return val < BigInt(min?.value || "0") ? tx : min;
@@ -89,7 +97,6 @@ export function analyzeTransactions(address, txs) {
     date:     new Date(Number(smallestTx.timeStamp) * 1000).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
     valueEth: (Number(BigInt(smallestTx.value || "0")) / 1e18).toFixed(6),
   } : null;
-  // ─────────────────────────────────────────────────────────────────────────
 
   const heatmap   = buildHeatmap(txs, 90);
   const baseScore = computeBaseScore({
@@ -102,19 +109,18 @@ export function analyzeTransactions(address, txs) {
   return {
     address,
     walletAgeDays,
-    totalTxs:       txs.length,
-    successTxs:     successTxs.length,
+    totalTxs:         txs.length,
+    successTxs:       successTxs.length,
     failedCount,
-    firstTx:        first  ? formatTx(first)  : null,
-    lastTx:         last   ? formatTx(last)   : null,
-    totalSentEth:   (Number(totalSentWei) / 1e18).toFixed(6),
-    totalRecvEth:   (Number(totalRecvWei) / 1e18).toFixed(6),
+    firstTx:          first ? formatTx(first) : null,
+    lastTx:           last  ? formatTx(last)  : null,
+    totalSentEth:     (Number(totalSentWei) / 1e18).toFixed(6),
+    totalRecvEth:     (Number(totalRecvWei) / 1e18).toFixed(6),
     avgGasUsed,
     uniqueContracts,
     topContracts,
     heatmap,
     baseScore,
-    // New metrics
     firstTxOnBase,
     latestTxOnBase,
     largestTxOnBase,
@@ -189,6 +195,20 @@ function emptyAnalytics(address) {
 }
 
 export async function getWalletAnalysis(address) {
-  const txs = await fetchTransactions(address);
-  return analyzeTransactions(address, txs);
-          }
+  const [txs, latestTx] = await Promise.all([
+    fetchTransactions(address),
+    blockscoutFetchLatest(address),
+  ]);
+  const result = analyzeTransactions(address, txs);
+
+  // Override latestTxOnBase with the true latest from desc fetch
+  if (latestTx) {
+    result.latestTxOnBase = {
+      hash:      latestTx.hash,
+      date:      new Date(Number(latestTx.timeStamp) * 1000).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
+      valueEth:  (Number(BigInt(latestTx.value || "0")) / 1e18).toFixed(6),
+      timestamp: Number(latestTx.timeStamp),
+    };
+  }
+  return result;
+}
