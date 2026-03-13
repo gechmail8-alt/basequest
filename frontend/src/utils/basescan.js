@@ -12,16 +12,28 @@ async function blockscoutFetch(address) {
 async function blockscoutFetchLatest(address) {
   try {
     const url = `https://base.blockscout.com/api/v2/addresses/${address}/transactions?filter=to%20%7C%20from`;
+    console.log("Fetching latest tx from v2:", url);
     const res = await fetch(url);
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn("v2 fetch failed with status:", res.status);
+      return null;
+    }
     const data = await res.json();
+    console.log("v2 API response:", JSON.stringify(data).slice(0, 300));
     const items = data?.items;
-    if (!Array.isArray(items) || items.length === 0) return null;
+    if (!Array.isArray(items) || items.length === 0) {
+      console.warn("v2 API returned no items");
+      return null;
+    }
     const tx = items[0];
+    console.log("Latest tx from v2:", tx.hash, tx.timestamp, tx.value);
+    const valueInWei = tx.value
+      ? (tx.value.includes(".") ? String(Math.round(parseFloat(tx.value) * 1e18)) : tx.value)
+      : "0";
     return {
       hash:      tx.hash,
       timeStamp: String(Math.floor(new Date(tx.timestamp).getTime() / 1000)),
-      value:     tx.value || "0",
+      value:     valueInWei,
     };
   } catch (err) {
     console.warn("blockscoutFetchLatest v2 failed:", err.message);
