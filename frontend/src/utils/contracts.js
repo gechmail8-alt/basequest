@@ -12,6 +12,7 @@ export const BASE_RPC_URL  = import.meta.env.VITE_CDP_RPC_URL || "https://mainne
 export const CORE_ABI = [
   "function completeGMTask() external payable",
   "function completeDeployTask(address deployedContract) external payable",
+  "function completeDeployRemix() external payable",
   "function completeSwapTask() external payable",
   "function completeBridgeTask() external payable",
   "function completeGameTask() external payable",
@@ -26,13 +27,14 @@ export const CORE_ABI = [
   "function getUserLevel(address user) external view returns (uint256)",
   "function getUserProfile(address user) external view returns (uint256 totalXP, string username, bool usernameSet, uint256 tasksCompleted, uint256 joinedAt, uint256 streakCount)",
   "function getDailyTasks(address user) external view returns (bool gmDone, bool deployDone, bool swapDone, bool bridgeDone, bool gameDone, bool profileDone)",
-  "function getSubTasks(address user) external view returns (bool swapAerodromeDone, bool swapUniswapDone, bool swapJumperDone, bool swapRelayDone, bool bridgeJumperDone, bool bridgeRelayDone)",
+  "function getSubTasks(address user) external view returns (bool swapAerodromeDone, bool swapUniswapDone, bool swapJumperDone, bool swapRelayDone, bool bridgeJumperDone, bool bridgeRelayDone, bool deployRemixDone)",
   "function getTopUsers(uint256 count) external view returns (address[] topAddresses, uint256[] topXPs)",
   "function getTotalUsers() external view returns (uint256)",
   "function getUserStreak(address user) external view returns (uint256)",
   "function profileTaskDone(address) external view returns (bool)",
   "function contractOwner() external view returns (address)",
   "function isRegistered(address) external view returns (bool)",
+  "function getRewardPool() external view returns (uint256)",
   "event TaskCompleted(address indexed user, string taskType, uint256 xpEarned, uint256 timestamp)",
   "event StreakBonusAwarded(address indexed user, uint256 streak, uint256 xpEarned)",
 ];
@@ -121,6 +123,10 @@ export async function getEthPrice() {
 }
 export function ethToUsd(ethAmount, ethPrice) { return (parseFloat(ethAmount || 0) * (ethPrice || 2500)).toFixed(2); }
 
+export const DEPLOY_PLATFORMS = [
+  { id: "deployRemix", name: "Deploy on Remix IDE", icon: "🔧", url: "https://remix.ethereum.org", xp: 50, color: "#00d4ff" },
+];
+
 export const SWAP_PLATFORMS = [
   { id: "swapAerodrome", name: "Swap on Aerodrome", icon: "✈️", url: "https://aerodrome.finance/swap",                          xp: 50, color: "#ff6b6b" },
   { id: "swapUniswap",   name: "Swap on Uniswap",   icon: "🦄", url: "https://app.uniswap.org/#/swap?chain=base",               xp: 50, color: "#ff007a" },
@@ -134,11 +140,11 @@ export const BRIDGE_PLATFORMS = [
 ];
 
 export const TASKS = [
-  { id: "gm",      name: "GM Base",        description: "Send a GM on-chain message",          xp: 50,  ethCost: "0.00005", icon: "☀️", daily: true,  field: null },
-  { id: "deploy",  name: "Deploy Contract", description: "Deploy a contract to Base Mainnet",   xp: 100, ethCost: "0.00005", icon: "🚀", daily: true,  field: "deployedContract", fieldLabel: "Deployed Contract Address", fieldPlaceholder: "0x..." },
-  { id: "swap",    name: "Swap on Base",    description: "Swap on any Base DEX",                xp: 75,  ethCost: "0.00005", icon: "🔄", daily: true,  field: null, hasSubs: true },
-  { id: "bridge",  name: "Bridge to Base",  description: "Bridge assets to Base",               xp: 100, ethCost: "0.00005", icon: "🌉", daily: true,  field: null, hasSubs: true },
-  { id: "game",    name: "Boss Raid",       description: "Attack the boss & win the prize pool", xp: 75, ethCost: "0.00005", icon: "🐉", daily: true,  field: null },
-  { id: "profile", name: "Set Profile",     description: "Set your on-chain username",          xp: 50,  ethCost: "0.00005", icon: "🪪", daily: false, oneTime: true, field: "username", fieldLabel: "Username (max 32 chars)", fieldPlaceholder: "based_degen" },
-  { id: "streak",  name: "Streak Bonus",    description: "Auto-awarded every 7 days",           xp: 200, ethCost: "0",       icon: "🔥", daily: false, auto: true },
+  { id: "gm",      name: "GM Base",        description: "Send a GM on-chain message",           xp: 50,  ethCost: "0.00005", icon: "☀️", daily: true,  field: null },
+  { id: "deploy",  name: "Deploy Contract", description: "Deploy a contract to Base Mainnet",    xp: 100, ethCost: "0.00005", icon: "🚀", daily: true,  field: "deployedContract", fieldLabel: "Deployed Contract Address", fieldPlaceholder: "0x...", hasSubs: true },
+  { id: "swap",    name: "Swap on Base",    description: "Swap on any Base DEX",                 xp: 75,  ethCost: "0.00005", icon: "🔄", daily: true,  field: null, hasSubs: true },
+  { id: "bridge",  name: "Bridge to Base",  description: "Bridge assets to Base",                xp: 100, ethCost: "0.00005", icon: "🌉", daily: true,  field: null, hasSubs: true },
+  { id: "game",    name: "Boss Raid",       description: "Attack the boss & win the prize pool", xp: 75,  ethCost: "0.00005", icon: "🐉", daily: true,  field: null },
+  { id: "profile", name: "Set Profile",     description: "Set your on-chain username",           xp: 50,  ethCost: "0.00005", icon: "🪪", daily: false, oneTime: true, field: "username", fieldLabel: "Username (max 32 chars)", fieldPlaceholder: "based_degen" },
+  { id: "streak",  name: "Streak Bonus",    description: "Auto-awarded every 7 days",            xp: 200, ethCost: "0",       icon: "🔥", daily: false, auto: true },
 ];
