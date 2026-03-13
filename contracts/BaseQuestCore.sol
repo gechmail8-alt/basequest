@@ -295,5 +295,17 @@ contract BaseQuestCore {
         contractOwner = newOwner;
     }
 
+    function withdrawRewardPool() external onlyOwner {
+        uint256 amount = rewardPool;
+        require(amount > 0, "BaseQuestCore: nothing to withdraw");
+        rewardPool = 0;
+        (bool sent, ) = payable(contractOwner).call{value: amount}("");
+        require(sent, "BaseQuestCore: withdraw failed");
+    }
+
+    function getRewardPool() external view returns (uint256) {
+        return rewardPool;
+    }
+
     receive() external payable { revert("BaseQuestCore: direct ETH not accepted"); }
 }
