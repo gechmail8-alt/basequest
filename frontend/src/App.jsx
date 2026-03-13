@@ -115,16 +115,7 @@ export default function App() {
             onMouseEnter={e => e.currentTarget.style.color = "white"}
             onMouseLeave={e => e.currentTarget.style.color = "#8892a4"}
           >
-            🐦 @Jee_phoenix
-          </a>
-          <a
-            href="https://t.me/Jeephoenix"
-            target="_blank" rel="noreferrer"
-            style={{ color: "#8892a4", fontSize: "13px", fontWeight: "600", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}
-            onMouseEnter={e => e.currentTarget.style.color = "white"}
-            onMouseLeave={e => e.currentTarget.style.color = "#8892a4"}
-          >
-            ✈️ @Jeephoenix
+            𝕏 @Jee_phoenix
           </a>
         </div>
         <div style={{ color: "#4a5568", fontSize: "12px", marginBottom: "4px" }}>
