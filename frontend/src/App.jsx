@@ -8,10 +8,10 @@ import BossRaid from "./components/BossRaid";
 import WalletAnalyzer from "./components/WalletAnalyzer";
 
 const TABS = [
-  { id: "dashboard", label: "Dashboard", icon: "/dashboard.png" },
-  { id: "quests", label: "Quests", icon: "/quests.png" },
-  { id: "bossraid", label: "Boss", icon: "/boss.png" },
-  { id: "analyzer", label: "Wallet", icon: "/wallet.png" },
+  { id: "dashboard", label: "Dashboard", icon: "/images/dashboard.png" },
+  { id: "quests", label: "Quests", icon: "/images/quests.png" },
+  { id: "bossraid", label: "Boss", icon: "/images/boss.png" },
+  { id: "analyzer", label: "Wallet", icon: "/images/wallet.png" },
 ];
 
 export default function App() {
@@ -63,7 +63,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* Mobile floating bottom nav with sliding highlight */}
+      {/* Mobile floating bottom nav */}
       <div style={{
         position: "fixed",
         bottom: "16px",
@@ -73,9 +73,9 @@ export default function App() {
         maxWidth: "480px",
         display: "flex",
         justifyContent: "space-between",
-        background: "rgba(10,11,15,0.45)", // semi-transparent bar
+        background: "rgba(10,11,15,0.45)",
         borderRadius: "9999px",
-        padding: "2px 0", // reduced height
+        padding: "2px 0",
         backdropFilter: "blur(18px)",
         zIndex: 100,
       }} className="mobile-nav">
@@ -89,7 +89,7 @@ export default function App() {
             width: `${100 / TABS.length}%`,
             height: "96%",
             borderRadius: "9999px",
-            background: "rgba(0,82,255,0.25)", // liquid glass highlight
+            background: "rgba(0,82,255,0.25)",
             backdropFilter: "blur(12px)",
             transition: "left 0.3s",
             zIndex: -1,
@@ -112,7 +112,7 @@ export default function App() {
               cursor: "pointer",
               position: "relative",
               padding: "2px 0",
-              transform: "translateY(-2px)", // move icon/text slightly up
+              transform: "translateY(-2px)",
             }}
           >
             <img src={tab.icon} alt={tab.label} style={{ width: "22px", height: "22px", marginBottom: "2px" }} />
