@@ -14,7 +14,7 @@ const TABS = [
   { id: "analyzer", label: "Wallet", icon: "/wallet.svg" },
 ];
 
-const SELECTED_BLUE = "#000000";
+const ICON_BLUE = "#0082FF"; // matches the icon filter color
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -120,14 +120,14 @@ export default function App() {
                 height: "22px",
                 marginBottom: "1px",
                 filter: activeTab === tab.id
-                  ? "invert(37%) sepia(98%) saturate(4869%) hue-rotate(199deg) brightness(101%) contrast(101%)" // blue
+                  ? "invert(37%) sepia(98%) saturate(4869%) hue-rotate(199deg) brightness(101%) contrast(101%)"
                   : "invert(100%)", // white
               }}
             />
             <span style={{
               fontSize: "10px",
               fontWeight: 700,
-              color: activeTab === tab.id ? SELECTED_BLUE : "white", // same color as icon
+              color: activeTab === tab.id ? ICON_BLUE : "white",
               transform: "translateY(-1px)", // slightly up
             }}>{tab.label}</span>
           </div>
