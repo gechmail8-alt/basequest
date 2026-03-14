@@ -1,223 +1,217 @@
 import { getLevelInfo, shortAddr } from "../utils/contracts";
 
-export default function Dashboard({ quests, wallet, setActiveTab }) { const { address, isConnected } = wallet; const { userProfile, completedCount, totalDaily, loading } = quests;
+export default function Dashboard({ quests, wallet, setActiveTab }) {
+
+const { address, isConnected } = wallet; const { userProfile, completedCount, totalDaily, loading } = quests;
 
 const levelInfo = userProfile ? getLevelInfo(userProfile.totalXP) : null;
 
-if (!isConnected) return ( <div style={{ padding: "60px 20px", textAlign: "center" }}> <div style={{ fontSize: "80px", marginBottom: "20px" }}> <img src="/base.svg" style={{ width: "80px", height: "80px" }} /> </div>
+if (!isConnected) return ( <div style={{ padding: "60px 20px", textAlign: "center" }}>
 
-<h1 style={{ color: "white", fontSize: "28px", fontWeight: "900", margin: "0 0 12px" }}>
+<div style={{ marginBottom: "20px" }}>
+    <img src="/base.svg" style={{ width: "84px", height: "84px" }} />
+  </div>
+
+  <h1 style={{ color: "white", fontSize: "28px", fontWeight: "900", marginBottom: "12px" }}>
     Skill issue if you're not on-chain yet.
   </h1>
 
-  <p style={{ color: "#8892a4", fontSize: "16px", maxWidth: "400px", margin: "0 auto 8px" }}>
+  <p style={{ color: "#8892a4", fontSize: "15px", maxWidth: "420px", margin: "0 auto 6px" }}>
     Stack XP. Build legacy. Eat the airdrop.
   </p>
 
-  <p style={{ color: "#0052ff", fontSize: "15px", fontWeight: "700", maxWidth: "400px", margin: "0 auto 32px" }}>
+  <p style={{ color: "#0052ff", fontSize: "14px", fontWeight: "700" }}>
     Based chads only. No paper hands allowed.
   </p>
+
 </div>
 
 );
 
-if (loading && !userProfile) return ( <div style={{ padding: "60px 20px", textAlign: "center" }}> <div style={{ fontSize: "40px", marginBottom: "16px" }}> <img src="/loading.svg" style={{ width: "40px", height: "40px" }} /> </div> <div style={{ color: "#8892a4" }}>Loading your profile...</div> </div> );
+if (loading && !userProfile) return ( <div style={{ padding: "60px 20px", textAlign: "center" }}> <img src="/loading.svg" style={{ width: "36px", height: "36px" }} /> <p style={{ color: "#8892a4", marginTop: "12px" }}>Loading profile...</p> </div> );
 
-return ( <div style={{ padding: "24px 0" }}>
+return (
 
-<div style={{ marginBottom: "24px" }}>
-    <h2 style={{ color: "white", fontSize: "22px", fontWeight: "800", margin: "0 0 4px" }}>
-      <img src="/wave.svg" style={{ width: "20px", height: "20px", marginRight: "6px", verticalAlign: "middle" }} />
-      Welcome back, {userProfile?.usernameSet ? userProfile.username : shortAddr(address)}
+<div style={{ padding: "24px 0", display: "flex", flexDirection: "column", gap: "18px" }}>
+
+  <div>
+
+    <h2 style={{ color: "white", fontSize: "22px", fontWeight: "800", marginBottom: "4px" }}>
+      Welcome back {userProfile?.usernameSet ? userProfile.username : shortAddr(address)}
     </h2>
 
-    <p style={{ color: "#8892a4", fontSize: "14px", margin: 0 }}>
-      Here's your BaseQuest overview.
+    <p style={{ color: "#8892a4", fontSize: "13px" }}>
+      BaseQuest dashboard
     </p>
+
   </div>
 
   {levelInfo && (
+
     <div style={{
-      background: "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
-      border: "1px solid rgba(0,82,255,0.3)",
-      borderRadius: "20px",
-      padding: "24px",
-      marginBottom: "16px",
+      background: "linear-gradient(135deg, rgba(0,82,255,0.18), rgba(0,82,255,0.04))",
+      border: "1px solid rgba(0,82,255,0.35)",
+      borderRadius: "18px",
+      padding: "22px"
     }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "12px" }}>
-        <div>
-          <div style={{ color: "#8892a4", fontSize: "12px", fontWeight: "700", letterSpacing: "1px", marginBottom: "4px" }}>
-            CURRENT LEVEL
-          </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/level.svg" style={{ width: "36px", height: "36px" }} />
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
 
-            <div>
-              <div style={{ color: levelInfo.current.color, fontWeight: "900", fontSize: "22px" }}>
-                Level {levelInfo.current.level} {levelInfo.current.name}
-              </div>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <img src="/level.svg" style={{ width: "36px", height: "36px" }} />
 
-              {levelInfo.next && (
-                <div style={{ color: "#8892a4", fontSize: "13px" }}>
-                  Next {levelInfo.next.name} at {levelInfo.next.minXP.toLocaleString()} XP
-                </div>
-              )}
+          <div>
+            <div style={{ color: levelInfo.current.color, fontWeight: "800", fontSize: "18px" }}>
+              Level {levelInfo.current.level}
+            </div>
+
+            <div style={{ color: "#8892a4", fontSize: "12px" }}>
+              {levelInfo.current.name}
             </div>
           </div>
         </div>
 
         <div style={{ textAlign: "right" }}>
-          <div style={{ color: "#f0b429", fontWeight: "900", fontSize: "32px" }}>
+          <div style={{ color: "#f0b429", fontWeight: "900", fontSize: "28px" }}>
             {levelInfo.xp.toLocaleString()}
           </div>
 
-          <div style={{ color: "#8892a4", fontSize: "13px" }}>Total XP</div>
+          <div style={{ color: "#8892a4", fontSize: "12px" }}>
+            XP
+          </div>
         </div>
+
       </div>
 
       {levelInfo.next && (
+
         <div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-            <span style={{ color: "#8892a4", fontSize: "12px" }}>
-              {levelInfo.xp.toLocaleString()} XP
-            </span>
 
-            <span style={{ color: "#8892a4", fontSize: "12px" }}>
-              {levelInfo.next.minXP.toLocaleString()} XP
-            </span>
-          </div>
+          <div style={{
+            height: "8px",
+            background: "rgba(255,255,255,0.08)",
+            borderRadius: "6px",
+            overflow: "hidden"
+          }}>
 
-          <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", height: "10px", overflow: "hidden" }}>
             <div style={{
-              height: "100%",
               width: `${levelInfo.progress}%`,
-              background: `linear-gradient(90deg, ${levelInfo.current.color}, ${levelInfo.current.color}99)`,
-              borderRadius: "8px",
-              boxShadow: `0 0 10px ${levelInfo.current.color}66`,
-              transition: "width 0.5s ease",
+              height: "100%",
+              background: levelInfo.current.color
             }}/>
+
           </div>
 
-          <div style={{ color: "#8892a4", fontSize: "12px", marginTop: "6px", textAlign: "center" }}>
+          <p style={{
+            color: "#8892a4",
+            fontSize: "11px",
+            marginTop: "6px",
+            textAlign: "center"
+          }}>
             {levelInfo.progress.toFixed(1)}% to {levelInfo.next.name}
-          </div>
+          </p>
+
         </div>
+
       )}
 
-      {!levelInfo.next && (
-        <div style={{ textAlign: "center", color: "#f0b429", fontWeight: "700", fontSize: "14px", marginTop: "8px" }}>
-          <img src="/trophy.svg" style={{ width: "20px", height: "20px", marginRight: "6px", verticalAlign: "middle" }} />
-          Max Level Reached
-        </div>
-      )}
     </div>
+
   )}
 
-  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px,1fr))", gap: "12px", marginBottom: "16px" }}>
+  <div style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(4,1fr)",
+    gap: "10px"
+  }}>
+
     {[
-      { label: "Tasks Completed", value: userProfile?.tasksCompleted?.toLocaleString() || "0", icon: "/check.svg", color: "#00c853" },
-      { label: "Day Streak", value: userProfile?.streakCount || "0", icon: "/streak.svg", color: "#f0b429" },
-      { label: "Daily Progress", value: `${completedCount}/${totalDaily}`, icon: "/progress.svg", color: "#0052ff" },
-      { label: "Member Since", value: userProfile?.joinedAt
-          ? new Date(userProfile.joinedAt * 1000).toLocaleDateString("en-US", { month: "short", year: "numeric" })
-          : "—", icon: "/calendar.svg", color: "#a855f7" },
+      { label: "Tasks", value: userProfile?.tasksCompleted?.toLocaleString() || "0", icon: "/check.svg" },
+      { label: "Streak", value: userProfile?.streakCount || "0", icon: "/streak.svg" },
+      { label: "Today", value: `${completedCount}/${totalDaily}`, icon: "/progress.svg" },
+      { label: "Joined", value: userProfile?.joinedAt
+          ? new Date(userProfile.joinedAt * 1000).toLocaleDateString("en-US",{month:"short",year:"numeric"})
+          : "-", icon: "/calendar.svg" }
     ].map(stat => (
+
       <div key={stat.label} style={{
         background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.07)",
-        borderRadius: "16px",
-        padding: "16px",
-        textAlign: "center",
+        border: "1px solid rgba(255,255,255,0.06)",
+        borderRadius: "14px",
+        padding: "14px",
+        textAlign: "center"
       }}>
-        <div style={{ fontSize: "24px", marginBottom: "8px" }}>
-          <img src={stat.icon} style={{ width: "24px", height: "24px" }} />
-        </div>
 
-        <div style={{ color: stat.color, fontWeight: "800", fontSize: "20px" }}>
+        <img src={stat.icon} style={{ width: "22px", height: "22px", marginBottom: "6px" }} />
+
+        <div style={{ color: "white", fontWeight: "700", fontSize: "16px" }}>
           {stat.value}
         </div>
 
-        <div style={{ color: "#8892a4", fontSize: "11px", marginTop: "4px" }}>
+        <div style={{ color: "#8892a4", fontSize: "11px" }}>
           {stat.label}
         </div>
+
       </div>
+
     ))}
-  </div>
-
-  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-
-    <button
-      onClick={() => setActiveTab("quests")}
-      style={{
-        background: "linear-gradient(135deg, #0052ff, #0041cc)",
-        border: "none",
-        borderRadius: "14px",
-        padding: "16px",
-        color: "white",
-        fontWeight: "800",
-        fontSize: "14px",
-        cursor: "pointer",
-        boxShadow: "0 4px 20px rgba(0,82,255,0.3)",
-      }}
-    >
-      <img src="/quests.svg" style={{ width: "24px", height: "24px", marginRight: "8px", verticalAlign: "middle" }} />
-      Daily Quests
-    </button>
-
-    <button
-      onClick={() => setActiveTab("bossraid")}
-      style={{
-        background: "linear-gradient(135deg, #ff3b3b, #cc0000)",
-        border: "none",
-        borderRadius: "14px",
-        padding: "16px",
-        color: "white",
-        fontWeight: "800",
-        fontSize: "14px",
-        cursor: "pointer",
-        boxShadow: "0 4px 20px rgba(255,59,59,0.3)",
-      }}
-    >
-      <img src="/boss.svg" style={{ width: "24px", height: "24px", marginRight: "8px", verticalAlign: "middle" }} />
-      Boss Raid
-    </button>
-
-    <button
-      onClick={() => setActiveTab("leaderboard")}
-      style={{
-        background: "rgba(240,180,41,0.1)",
-        border: "1px solid rgba(240,180,41,0.3)",
-        borderRadius: "14px",
-        padding: "16px",
-        color: "#f0b429",
-        fontWeight: "800",
-        fontSize: "14px",
-        cursor: "pointer",
-      }}
-    >
-      <img src="/leaderboard.svg" style={{ width: "24px", height: "24px", marginRight: "8px", verticalAlign: "middle" }} />
-      Leaderboard
-    </button>
-
-    <button
-      onClick={() => setActiveTab("analyzer")}
-      style={{
-        background: "rgba(168,85,247,0.1)",
-        border: "1px solid rgba(168,85,247,0.3)",
-        borderRadius: "14px",
-        padding: "16px",
-        color: "#a855f7",
-        fontWeight: "800",
-        fontSize: "14px",
-        cursor: "pointer",
-      }}
-    >
-      <img src="/wallet.svg" style={{ width: "24px", height: "24px", marginRight: "8px", verticalAlign: "middle" }} />
-      Wallet Analyzer
-    </button>
 
   </div>
+
+  <div style={{
+    background: "rgba(255,255,255,0.03)",
+    border: "1px solid rgba(255,255,255,0.06)",
+    borderRadius: "18px",
+    padding: "14px"
+  }}>
+
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(4,1fr)",
+      gap: "10px"
+    }}>
+
+      {[
+        { label: "Quests", icon: "/quests.svg", tab: "quests" },
+        { label: "Boss", icon: "/boss.svg", tab: "bossraid" },
+        { label: "Ranks", icon: "/leaderboard.svg", tab: "leaderboard" },
+        { label: "Wallet", icon: "/wallet.svg", tab: "analyzer" }
+      ].map(action => (
+
+        <button
+          key={action.label}
+          onClick={() => setActiveTab(action.tab)}
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: "14px",
+            padding: "12px",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "6px"
+          }}
+        >
+
+          <img src={action.icon} style={{ width: "24px", height: "24px" }} />
+
+          <span style={{
+            color: "#8892a4",
+            fontSize: "12px",
+            fontWeight: "600"
+          }}>
+            {action.label}
+          </span>
+
+        </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
 </div>
 
 ); }
