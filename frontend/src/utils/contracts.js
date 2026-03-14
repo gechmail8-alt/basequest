@@ -30,6 +30,7 @@ export const CORE_ABI = [
   "function getSubTasks(address user) external view returns (bool swapAerodromeDone, bool swapUniswapDone, bool swapJumperDone, bool swapRelayDone, bool bridgeJumperDone, bool bridgeRelayDone, bool deployRemixDone)",
   "function getTopUsers(uint256 count) external view returns (address[] topAddresses, uint256[] topXPs)",
   "function getTotalUsers() external view returns (uint256)",
+  "function allUsers(uint256 index) external view returns (address)",
   "function getUserStreak(address user) external view returns (uint256)",
   "function profileTaskDone(address) external view returns (bool)",
   "function contractOwner() external view returns (address)",
