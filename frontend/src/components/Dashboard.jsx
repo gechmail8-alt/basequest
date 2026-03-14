@@ -6,7 +6,7 @@ const levelInfo = userProfile ? getLevelInfo(userProfile.totalXP) : null;
 
 const iconStyle = { width: "32px", height: "32px", display: "block", margin: "0 auto 8px", };
 
-if (!isConnected) return ( <div style={{ padding: "60px 20px", textAlign: "center" }}> <div style={{ marginBottom: "20px" }}> <img src="/images/base.svg" style={{ width: "72px", height: "72px", display: "block", margin: "0 auto", filter: "invert(32%) sepia(98%) saturate(2761%) hue-rotate(212deg) brightness(100%) contrast(102%)", }} /> </div>
+if (!isConnected) return ( <div style={{ padding: "60px 20px", textAlign: "center" }}> <div style={{ marginBottom: "20px" }}> <img src="/base.svg" style={{ width: "72px", height: "72px", display: "block", margin: "0 auto", filter: "invert(32%) sepia(98%) saturate(2761%) hue-rotate(212deg) brightness(100%) contrast(102%)", }} /> </div>
 
 <h1
       style={{
