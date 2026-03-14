@@ -19,11 +19,8 @@ export function useLeaderboard(currentAddress, refreshInterval = 60000) {
 
       if (total === 0) { setEntries([]); setLoading(false); return; }
 
-      const count  = Math.min(total, 50);
-      const topRaw = await core.getTopUsers(count);
-
-      const addrs = Array.from(topRaw[0] || []);
-      const xps   = Array.from(topRaw[1] || []);
+      const count        = Math.min(total, 50);
+      const [addrs, xps] = await core.getTopUsers(count);
 
       if (!addrs || addrs.length === 0) { setEntries([]); setLoading(false); return; }
 
