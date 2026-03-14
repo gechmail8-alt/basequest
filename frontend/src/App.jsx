@@ -75,7 +75,7 @@ export default function App() {
         justifyContent: "space-between",
         background: "rgba(10,11,15,0.6)",
         borderRadius: "9999px",
-        padding: "2px 0",   
+        padding: "2px 0",
         backdropFilter: "blur(15px)",
         zIndex: 100,
         boxShadow: "0 6px 10px rgba(0,0,0,0.35)",
@@ -85,10 +85,10 @@ export default function App() {
         <div
           style={{
             position: "absolute",
-            top: 0,
+            top: "3%",             // moved slightly upward
             left: `${highlightPosition}%`,
             width: `${100 / TABS.length}%`,
-            height: "100%",      // full height now
+            height: "94%",          // slightly shorter than full container
             borderRadius: "9999px",
             background: "rgba(0,82,255,0.3)",
             backdropFilter: "blur(10px)",
@@ -109,10 +109,10 @@ export default function App() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center", // centers icon and text vertically
+              justifyContent: "center",
               cursor: "pointer",
               position: "relative",
-              padding: "4px 0",      // slightly taller padding for spacing
+              padding: "4px 0",
             }}
           >
             <span style={{ fontSize: "22px", marginBottom: "2px", fontWeight: 700 }}>{tab.icon}</span>
