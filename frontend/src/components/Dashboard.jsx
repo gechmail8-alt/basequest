@@ -4,9 +4,7 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
   const { address, isConnected } = wallet;
   const { userProfile, completedCount, totalDaily, loading } = quests;
 
-  const levelInfo = userProfile && typeof userProfile.totalXP === "number"
-    ? getLevelInfo(userProfile.totalXP)
-    : null;
+  const levelInfo = userProfile ? getLevelInfo(userProfile.totalXP) : null;
 
   if (!isConnected) return (
     <div style={{ padding: "60px 20px", textAlign: "center" }}>
@@ -43,15 +41,16 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         </p>
       </div>
 
-      {/* Row 1: Current Level (1×1 full width) */}
-      {levelInfo ? (
+      {/* Row 1: Current Level */}
+      {userProfile && levelInfo && (
         <div style={{
           background: "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
           border: "1px solid rgba(0,82,255,0.3)",
           borderRadius: "20px",
           padding: "24px",
+          marginBottom: "16px",
         }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "12px" }}>
             <div>
               <div style={{ color: "#8892a4", fontSize: "12px", fontWeight: "700", letterSpacing: "1px", marginBottom: "4px" }}>
                 CURRENT LEVEL
@@ -81,8 +80,12 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
           {levelInfo.next && (
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                <span style={{ color: "#8892a4", fontSize: "12px" }}>{levelInfo.xp.toLocaleString()} XP</span>
-                <span style={{ color: "#8892a4", fontSize: "12px" }}>{levelInfo.next.minXP.toLocaleString()} XP</span>
+                <span style={{ color: "#8892a4", fontSize: "12px" }}>
+                  {levelInfo.xp.toLocaleString()} XP
+                </span>
+                <span style={{ color: "#8892a4", fontSize: "12px" }}>
+                  {levelInfo.next.minXP.toLocaleString()} XP
+                </span>
               </div>
               <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", height: "10px", overflow: "hidden" }}>
                 <div style={{
@@ -91,7 +94,7 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
                   background: `linear-gradient(90deg, ${levelInfo.current.color}, ${levelInfo.current.color}99)`,
                   borderRadius: "8px",
                   boxShadow: `0 0 10px ${levelInfo.current.color}66`,
-                  transition: "width 0.5s ease"
+                  transition: "width 0.5s ease",
                 }} />
               </div>
               <div style={{ color: "#8892a4", fontSize: "12px", marginTop: "6px", textAlign: "center" }}>
@@ -105,21 +108,9 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
             </div>
           )}
         </div>
-      ) : (
-        <div style={{
-          background: "linear-gradient(135deg, rgba(0,82,255,0.1), rgba(0,82,255,0.05))",
-          border: "1px solid rgba(0,82,255,0.3)",
-          borderRadius: "20px",
-          padding: "24px",
-          textAlign: "center"
-        }}>
-          <div style={{ fontSize: "36px", marginBottom: "8px" }}>🟦</div>
-          <div style={{ color: "#8892a4", fontSize: "16px" }}>Current Level</div>
-          <div style={{ color: "#00c853", fontWeight: "800", fontSize: "20px" }}>—</div>
-        </div>
       )}
 
-      {/* Row 2: Tasks Completed / Today Completed (2×1) */}
+      {/* Row 2: Tasks Completed / Today Completed */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         <div style={{
           background: "rgba(255,255,255,0.03)",
@@ -149,7 +140,7 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         </div>
       </div>
 
-      {/* Row 3: Day Streak / Member Since (2×1) */}
+      {/* Row 3: Day Streak / Member Since */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         <div style={{
           background: "rgba(255,255,255,0.03)",
@@ -181,7 +172,7 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         </div>
       </div>
 
-      {/* Row 4: Leaderboard (1×1 full width) */}
+      {/* Row 4: Leaderboard */}
       <div style={{ marginTop: "16px" }}>
         <button
           onClick={() => setActiveTab("leaderboard")}
@@ -203,4 +194,4 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
 
     </div>
   );
-}
+                  }
