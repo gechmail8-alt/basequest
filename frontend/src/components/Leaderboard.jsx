@@ -15,7 +15,7 @@ export default function Leaderboard({ wallet }) {
             🏆 Leaderboard
           </h2>
           <p style={{ color: "#8892a4", fontSize: "14px", margin: 0 }}>
-            Top {entries.length} of {totalUsers} farmers
+            Top {entries.length} of {totalUsers} users
             {lastUpdated && (
               <span style={{ marginLeft: "8px" }}>· Updated {lastUpdated.toLocaleTimeString()}</span>
             )}
