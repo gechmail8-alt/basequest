@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import QuestBoard from "./components/QuestBoard";
 import BossRaid from "./components/BossRaid";
-import Leaderboard from "./components/Leaderboard;
+import Leaderboard from "./components/Leaderboard";
 import WalletAnalyzer from "./components/WalletAnalyzer";
 
 const TABS = [
@@ -15,7 +15,7 @@ const TABS = [
   { id: "analyzer", label: "Wallet", icon: "/wallet.svg" },
 ];
 
-const ICON_BLUE = "#0082FF"; // matches the icon filter color
+const ICON_BLUE = "#0082FF";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -27,12 +27,18 @@ export default function App() {
 
   const renderTab = () => {
     switch (activeTab) {
-      case "dashboard": return <Dashboard quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
-      case "quests": return <QuestBoard quests={quests} wallet={wallet} />;
-      case "bossraid": return <BossRaid wallet={wallet} />;
-      case "leaderboard": return <Leaderboard  wallet={wallet} />;
-      case "analyzer": return <WalletAnalyzer wallet={wallet} />;
-      default: return <Dashboard quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
+      case "dashboard":
+        return <Dashboard quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
+      case "quests":
+        return <QuestBoard quests={quests} wallet={wallet} />;
+      case "bossraid":
+        return <BossRaid wallet={wallet} />;
+      case "leaderboard":
+        return <Leaderboard wallet={wallet} />;
+      case "analyzer":
+        return <WalletAnalyzer wallet={wallet} />;
+      default:
+        return <Dashboard quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
     }
   };
 
@@ -64,6 +70,7 @@ export default function App() {
         </div>
       </div>
 
+      {/* Bottom mobile nav */}
       <div style={{
         position: "fixed",
         bottom: "16px",
@@ -111,7 +118,7 @@ export default function App() {
               cursor: "pointer",
               position: "relative",
               padding: "2px 0",
-              transform: "translateY(0px)", // slightly up
+              transform: "translateY(0px)",
             }}
           >
             <img
@@ -123,14 +130,14 @@ export default function App() {
                 marginBottom: "1px",
                 filter: activeTab === tab.id
                   ? "invert(37%) sepia(98%) saturate(4869%) hue-rotate(199deg) brightness(101%) contrast(101%)"
-                  : "invert(100%)", // white
+                  : "invert(100%)",
               }}
             />
             <span style={{
               fontSize: "10px",
               fontWeight: 700,
               color: activeTab === tab.id ? ICON_BLUE : "white",
-              transform: "translateY(-1px)", // slightly up
+              transform: "translateY(-1px)",
             }}>{tab.label}</span>
           </div>
         ))}
