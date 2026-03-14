@@ -18,6 +18,22 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       <p style={{ color: "#0052ff", fontSize: "15px", fontWeight: "700", maxWidth: "400px", margin: "0 auto 32px" }}>
         Based chads only. No paper hands allowed.
       </p>
+      <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+        {[
+          { icon: "☀️", label: "Daily Quests" },
+          { icon: "🐉", label: "Boss Raids" },
+          { icon: "🏆", label: "Leaderboard" },
+          { icon: "🔍", label: "Wallet Analyzer" },
+        ].map(f => (
+          <div key={f.label} style={{
+            background: "rgba(0,82,255,0.08)", border: "1px solid rgba(0,82,255,0.2)",
+            borderRadius: "14px", padding: "16px 20px", textAlign: "center", minWidth: "100px",
+          }}>
+            <div style={{ fontSize: "28px", marginBottom: "6px" }}>{f.icon}</div>
+            <div style={{ color: "#8892a4", fontSize: "12px", fontWeight: "600" }}>{f.label}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 
@@ -44,10 +60,10 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       {/* XP + Level card */}
       {levelInfo && (
         <div style={{
-          background: "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
-          border: "1px solid rgba(0,82,255,0.3)",
+          background:   "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
+          border:       "1px solid rgba(0,82,255,0.3)",
           borderRadius: "20px",
-          padding: "24px",
+          padding:      "24px",
           marginBottom: "16px",
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "12px" }}>
@@ -90,11 +106,11 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
               </div>
               <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", height: "10px", overflow: "hidden" }}>
                 <div style={{
-                  height: "100%",
-                  width: `${levelInfo.progress}%`,
+                  height:     "100%",
+                  width:      `${levelInfo.progress}%`,
                   background: `linear-gradient(90deg, ${levelInfo.current.color}, ${levelInfo.current.color}99)`,
                   borderRadius: "8px",
-                  boxShadow: `0 0 10px ${levelInfo.current.color}66`,
+                  boxShadow:  `0 0 10px ${levelInfo.current.color}66`,
                   transition: "width 0.5s ease",
                 }}/>
               </div>
@@ -115,18 +131,18 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px,1fr))", gap: "12px", marginBottom: "16px" }}>
         {[
           { label: "Tasks Completed", value: userProfile?.tasksCompleted?.toLocaleString() || "0", icon: "✅", color: "#00c853" },
-          { label: "Day Streak",      value: userProfile?.streakCount || "0", icon: "🔥", color: "#f0b429" },
-          { label: "Daily Progress",  value: `${completedCount}/${totalDaily}`, icon: "🗺️", color: "#0052ff" },
+          { label: "Day Streak",      value: userProfile?.streakCount || "0",                      icon: "🔥", color: "#f0b429" },
+          { label: "Daily Progress",  value: `${completedCount}/${totalDaily}`,                    icon: "🗺️", color: "#0052ff" },
           { label: "Member Since",    value: userProfile?.joinedAt
               ? new Date(userProfile.joinedAt * 1000).toLocaleDateString("en-US", { month: "short", year: "numeric" })
-              : "—", icon: "📅", color: "#a855f7" },
+              : "—",                                                                                icon: "📅", color: "#a855f7" },
         ].map(stat => (
           <div key={stat.label} style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.07)",
+            background:   "rgba(255,255,255,0.03)",
+            border:       "1px solid rgba(255,255,255,0.07)",
             borderRadius: "16px",
-            padding: "16px",
-            textAlign: "center",
+            padding:      "16px",
+            textAlign:    "center",
           }}>
             <div style={{ fontSize: "24px", marginBottom: "8px" }}>{stat.icon}</div>
             <div style={{ color: stat.color, fontWeight: "800", fontSize: "20px" }}>{stat.value}</div>
@@ -135,20 +151,20 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         ))}
       </div>
 
-      {/* Quick action buttons (bottom) */}
+      {/* Quick action buttons */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         <button
           onClick={() => setActiveTab("quests")}
           style={{
-            background: "linear-gradient(135deg, #0052ff, #0041cc)",
-            border: "none",
+            background:   "linear-gradient(135deg, #0052ff, #0041cc)",
+            border:       "none",
             borderRadius: "14px",
-            padding: "16px",
-            color: "white",
-            fontWeight: "800",
-            fontSize: "14px",
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(0,82,255,0.3)",
+            padding:      "16px",
+            color:        "white",
+            fontWeight:   "800",
+            fontSize:     "14px",
+            cursor:       "pointer",
+            boxShadow:    "0 4px 20px rgba(0,82,255,0.3)",
           }}
         >
           🗺️ Daily Quests
@@ -156,15 +172,15 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         <button
           onClick={() => setActiveTab("bossraid")}
           style={{
-            background: "linear-gradient(135deg, #ff3b3b, #cc0000)",
-            border: "none",
+            background:   "linear-gradient(135deg, #ff3b3b, #cc0000)",
+            border:       "none",
             borderRadius: "14px",
-            padding: "16px",
-            color: "white",
-            fontWeight: "800",
-            fontSize: "14px",
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(255,59,59,0.3)",
+            padding:      "16px",
+            color:        "white",
+            fontWeight:   "800",
+            fontSize:     "14px",
+            cursor:       "pointer",
+            boxShadow:    "0 4px 20px rgba(255,59,59,0.3)",
           }}
         >
           🐉 Boss Raid
@@ -172,14 +188,14 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         <button
           onClick={() => setActiveTab("leaderboard")}
           style={{
-            background: "rgba(240,180,41,0.1)",
-            border: "1px solid rgba(240,180,41,0.3)",
+            background:   "rgba(240,180,41,0.1)",
+            border:       "1px solid rgba(240,180,41,0.3)",
             borderRadius: "14px",
-            padding: "16px",
-            color: "#f0b429",
-            fontWeight: "800",
-            fontSize: "14px",
-            cursor: "pointer",
+            padding:      "16px",
+            color:        "#f0b429",
+            fontWeight:   "800",
+            fontSize:     "14px",
+            cursor:       "pointer",
           }}
         >
           🏆 Leaderboard
@@ -187,14 +203,14 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         <button
           onClick={() => setActiveTab("analyzer")}
           style={{
-            background: "rgba(168,85,247,0.1)",
-            border: "1px solid rgba(168,85,247,0.3)",
+            background:   "rgba(168,85,247,0.1)",
+            border:       "1px solid rgba(168,85,247,0.3)",
             borderRadius: "14px",
-            padding: "16px",
-            color: "#a855f7",
-            fontWeight: "800",
-            fontSize: "14px",
-            cursor: "pointer",
+            padding:      "16px",
+            color:        "#a855f7",
+            fontWeight:   "800",
+            fontSize:     "14px",
+            cursor:       "pointer",
           }}
         >
           🔍 Wallet Analyzer
@@ -202,4 +218,4 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       </div>
     </div>
   );
-              }
+        }
