@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import QuestBoard from "./components/QuestBoard";
 import BossRaid from "./components/BossRaid";
+import Leaderboard from "./components/Leaderboard;
 import WalletAnalyzer from "./components/WalletAnalyzer";
 
 const TABS = [
