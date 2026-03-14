@@ -8,10 +8,10 @@ import BossRaid from "./components/BossRaid";
 import WalletAnalyzer from "./components/WalletAnalyzer";
 
 const TABS = [
-  { id: "dashboard", label: "Dashboard", icon: "🏠" },
-  { id: "quests", label: "Quests", icon: "🗺️" },
-  { id: "bossraid", label: "Boss", icon: "🐉" },
-  { id: "analyzer", label: "Wallet", icon: "🔍" },
+  { id: "dashboard", label: "Dashboard", icon: "/dashboard.png" },
+  { id: "quests", label: "Quests", icon: "/quests.png" },
+  { id: "bossraid", label: "Boss", icon: "/boss.png" },
+  { id: "analyzer", label: "Wallet", icon: "/wallet.png" },
 ];
 
 export default function App() {
@@ -63,20 +63,20 @@ export default function App() {
         </div>
       </div>
 
-      {/* Mobile floating bottom nav with liquid glass highlight */}
+      {/* Mobile floating bottom nav with sliding highlight */}
       <div style={{
         position: "fixed",
-        bottom: "16px", // moved slightly down
+        bottom: "16px",
         left: "50%",
         transform: "translateX(-50%)",
         width: "90%",
         maxWidth: "480px",
         display: "flex",
         justifyContent: "space-between",
-        background: "rgba(10,11,15,0.45)", // increased transparency
+        background: "rgba(10,11,15,0.45)", // semi-transparent bar
         borderRadius: "9999px",
         padding: "2px 0", // reduced height
-        backdropFilter: "blur(18px)", // glass effect
+        backdropFilter: "blur(18px)",
         zIndex: 100,
       }} className="mobile-nav">
 
@@ -89,7 +89,7 @@ export default function App() {
             width: `${100 / TABS.length}%`,
             height: "96%",
             borderRadius: "9999px",
-            background: "rgba(0,82,255,0.25)", // semi-transparent liquid glass highlight
+            background: "rgba(0,82,255,0.25)", // liquid glass highlight
             backdropFilter: "blur(12px)",
             transition: "left 0.3s",
             zIndex: -1,
@@ -111,11 +111,11 @@ export default function App() {
               justifyContent: "center",
               cursor: "pointer",
               position: "relative",
-              padding: "2px 0", // reduce vertical padding
-              transform: "translateY(-2px)", // move text/icon slightly up
+              padding: "2px 0",
+              transform: "translateY(-2px)", // move icon/text slightly up
             }}
           >
-            <span style={{ fontSize: "22px", marginBottom: "0", fontWeight: 700 }}>{tab.icon}</span>
+            <img src={tab.icon} alt={tab.label} style={{ width: "22px", height: "22px", marginBottom: "2px" }} />
             <span style={{ fontSize: "10px", color: "white", fontWeight: 700 }}>{tab.label}</span>
           </div>
         ))}
