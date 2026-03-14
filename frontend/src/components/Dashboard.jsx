@@ -4,7 +4,9 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
   const { address, isConnected } = wallet;
   const { userProfile, completedCount, totalDaily, loading } = quests;
 
-  const levelInfo = userProfile ? getLevelInfo(userProfile.totalXP) : null;
+  const levelInfo = userProfile && typeof userProfile.totalXP === "number"
+    ? getLevelInfo(userProfile.totalXP)
+    : null;
 
   if (!isConnected) return (
     <div style={{ padding: "60px 20px", textAlign: "center" }}>
@@ -42,7 +44,7 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       </div>
 
       {/* Row 1: Current Level (1×1 full width) */}
-      {levelInfo && (
+      {levelInfo ? (
         <div style={{
           background: "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
           border: "1px solid rgba(0,82,255,0.3)",
@@ -102,6 +104,18 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
               🏆 Max Level Reached!
             </div>
           )}
+        </div>
+      ) : (
+        <div style={{
+          background: "linear-gradient(135deg, rgba(0,82,255,0.1), rgba(0,82,255,0.05))",
+          border: "1px solid rgba(0,82,255,0.3)",
+          borderRadius: "20px",
+          padding: "24px",
+          textAlign: "center"
+        }}>
+          <div style={{ fontSize: "36px", marginBottom: "8px" }}>🟦</div>
+          <div style={{ color: "#8892a4", fontSize: "16px" }}>Current Level</div>
+          <div style={{ color: "#00c853", fontWeight: "800", fontSize: "20px" }}>—</div>
         </div>
       )}
 
@@ -189,4 +203,4 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
 
     </div>
   );
-      }
+}
