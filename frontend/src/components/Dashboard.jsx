@@ -42,99 +42,125 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       {/* Row 1: Current Level (1x1 full width) */}
       {levelInfo && (
         <div style={{
-          background: "linear-gradient(135deg, rgba(0,82,255,0.18), rgba(0,82,255,0.04))",
-          border: "1px solid rgba(0,82,255,0.35)",
-          borderRadius: "18px",
-          padding: "22px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between"
+          background: "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
+          border: "1px solid rgba(0,82,255,0.3)",
+          borderRadius: "20px",
+          padding: "24px",
+          marginBottom: "16px"
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/level.svg" style={{ width: "36px", height: "36px" }} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span style={{ fontSize: "36px" }}>{levelInfo.current.emoji}</span>
+              <div>
+                <div style={{ color: levelInfo.current.color, fontWeight: "900", fontSize: "22px" }}>
+                  Level {levelInfo.current.level} — {levelInfo.current.name}
+                </div>
+                {levelInfo.next && (
+                  <div style={{ color: "#8892a4", fontSize: "13px" }}>
+                    Next: {levelInfo.next.name} at {levelInfo.next.minXP.toLocaleString()} XP
+                  </div>
+                )}
+              </div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ color: "#f0b429", fontWeight: "900", fontSize: "32px" }}>
+                {levelInfo.xp.toLocaleString()}
+              </div>
+              <div style={{ color: "#8892a4", fontSize: "13px" }}>Total XP</div>
+            </div>
+          </div>
+          {levelInfo.next && (
             <div>
-              <div style={{ color: levelInfo.current.color, fontWeight: "800", fontSize: "18px" }}>
-                Level {levelInfo.current.level}
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                <span style={{ color: "#8892a4", fontSize: "12px" }}>{levelInfo.xp.toLocaleString()} XP</span>
+                <span style={{ color: "#8892a4", fontSize: "12px" }}>{levelInfo.next.minXP.toLocaleString()} XP</span>
               </div>
-              <div style={{ color: "#8892a4", fontSize: "12px" }}>
-                {levelInfo.current.name}
+              <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", height: "10px", overflow: "hidden" }}>
+                <div style={{
+                  height: "100%",
+                  width: `${levelInfo.progress}%`,
+                  background: `linear-gradient(90deg, ${levelInfo.current.color}, ${levelInfo.current.color}99)`,
+                  borderRadius: "8px",
+                  boxShadow: `0 0 10px ${levelInfo.current.color}66`,
+                  transition: "width 0.5s ease"
+                }} />
+              </div>
+              <div style={{ color: "#8892a4", fontSize: "12px", marginTop: "6px", textAlign: "center" }}>
+                {levelInfo.progress.toFixed(1)}% to {levelInfo.next.name}
               </div>
             </div>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ color: "#f0b429", fontWeight: "900", fontSize: "28px" }}>
-              {levelInfo.xp.toLocaleString()}
+          )}
+          {!levelInfo.next && (
+            <div style={{ textAlign: "center", color: "#f0b429", fontWeight: "700", fontSize: "14px", marginTop: "8px" }}>
+              🏆 Max Level Reached!
             </div>
-            <div style={{ color: "#8892a4", fontSize: "12px" }}>XP</div>
-          </div>
+          )}
         </div>
       )}
 
-      {/* Row 2: Tasks Completed / Today Completed (2x1) */}
+      {/* Row 2: Tasks Completed / Today Completed (2×1) */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         <div style={{
           background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          borderRadius: "14px",
+          border: "1px solid rgba(255,255,255,0.07)",
+          borderRadius: "16px",
           padding: "16px",
           textAlign: "center"
         }}>
           <img src="/check.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "700", fontSize: "16px" }}>
+          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
             {userProfile?.tasksCompleted?.toLocaleString() || "0"}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "12px" }}>Total Tasks</div>
+          <div style={{ color: "#8892a4", fontSize: "11px" }}>Tasks Completed</div>
         </div>
-
         <div style={{
           background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          borderRadius: "14px",
+          border: "1px solid rgba(255,255,255,0.07)",
+          borderRadius: "16px",
           padding: "16px",
           textAlign: "center"
         }}>
           <img src="/progress.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "700", fontSize: "16px" }}>
+          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
             {completedCount}/{totalDaily}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "12px" }}>Today Completed</div>
+          <div style={{ color: "#8892a4", fontSize: "11px" }}>Today Completed</div>
         </div>
       </div>
 
-      {/* Row 3: Streak / Member Since (2x1) */}
+      {/* Row 3: Streak / Member Since (2×1) */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         <div style={{
           background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          borderRadius: "14px",
+          border: "1px solid rgba(255,255,255,0.07)",
+          borderRadius: "16px",
           padding: "16px",
           textAlign: "center"
         }}>
           <img src="/streak.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "700", fontSize: "16px" }}>
+          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
             {userProfile?.streakCount || "0"}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "12px" }}>Day Streak</div>
+          <div style={{ color: "#8892a4", fontSize: "11px" }}>Day Streak</div>
         </div>
-
         <div style={{
           background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          borderRadius: "14px",
+          border: "1px solid rgba(255,255,255,0.07)",
+          borderRadius: "16px",
           padding: "16px",
           textAlign: "center"
         }}>
           <img src="/calendar.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "700", fontSize: "16px" }}>
+          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
             {userProfile?.joinedAt
-              ? new Date(userProfile.joinedAt * 1000).toLocaleDateString("en-US",{month:"short",year:"numeric"})
+              ? new Date(userProfile.joinedAt * 1000).toLocaleDateString("en-US", { month: "short", year: "numeric" })
               : "-"}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "12px" }}>Member Since</div>
+          <div style={{ color: "#8892a4", fontSize: "11px" }}>Member Since</div>
         </div>
       </div>
 
-      {/* Row 4: Leaderboard (1x1 full width) */}
+      {/* Row 4: Leaderboard (1×1 full width) */}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <button
           onClick={() => setActiveTab("leaderboard")}
