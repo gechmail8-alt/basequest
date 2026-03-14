@@ -8,14 +8,14 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
 
   if (!isConnected) return (
     <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <img src="/base.svg" style={{ width: "84px", height: "84px", marginBottom: "20px" }} />
+      <div style={{ fontSize: "80px", marginBottom: "20px" }}>🟦</div>
       <h1 style={{ color: "white", fontSize: "28px", fontWeight: "900", marginBottom: "12px" }}>
         Skill issue if you're not on-chain yet.
       </h1>
-      <p style={{ color: "#8892a4", fontSize: "15px", maxWidth: "420px", margin: "0 auto 6px" }}>
+      <p style={{ color: "#8892a4", fontSize: "16px", maxWidth: "400px", margin: "0 auto 8px" }}>
         Stack XP. Build legacy. Eat the airdrop.
       </p>
-      <p style={{ color: "#0052ff", fontSize: "14px", fontWeight: "700" }}>
+      <p style={{ color: "#0052ff", fontSize: "15px", fontWeight: "700", maxWidth: "400px", margin: "0 auto 32px" }}>
         Based chads only. No paper hands allowed.
       </p>
     </div>
@@ -23,8 +23,8 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
 
   if (loading && !userProfile) return (
     <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <img src="/loading.svg" style={{ width: "36px", height: "36px" }} />
-      <p style={{ color: "#8892a4", marginTop: "12px" }}>Loading profile...</p>
+      <div style={{ fontSize: "40px", marginBottom: "16px" }}>⏳</div>
+      <div style={{ color: "#8892a4" }}>Loading your profile...</div>
     </div>
   );
 
@@ -34,32 +34,38 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       {/* Header */}
       <div>
         <h2 style={{ color: "white", fontSize: "22px", fontWeight: "800", marginBottom: "4px" }}>
-          Welcome back {userProfile?.usernameSet ? userProfile.username : shortAddr(address)}
+          👋 Welcome back, {userProfile?.usernameSet ? userProfile.username : shortAddr(address)}
         </h2>
-        <p style={{ color: "#8892a4", fontSize: "13px" }}>BaseQuest dashboard</p>
+        <p style={{ color: "#8892a4", fontSize: "14px", margin: 0 }}>
+          Here's your BaseQuest overview.
+        </p>
       </div>
 
-      {/* Row 1: Current Level (1x1 full width) */}
+      {/* Row 1: Current Level (1×1 full width) */}
       {levelInfo && (
         <div style={{
           background: "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
           border: "1px solid rgba(0,82,255,0.3)",
           borderRadius: "20px",
           padding: "24px",
-          marginBottom: "16px"
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ fontSize: "36px" }}>{levelInfo.current.emoji}</span>
-              <div>
-                <div style={{ color: levelInfo.current.color, fontWeight: "900", fontSize: "22px" }}>
-                  Level {levelInfo.current.level} — {levelInfo.current.name}
-                </div>
-                {levelInfo.next && (
-                  <div style={{ color: "#8892a4", fontSize: "13px" }}>
-                    Next: {levelInfo.next.name} at {levelInfo.next.minXP.toLocaleString()} XP
+            <div>
+              <div style={{ color: "#8892a4", fontSize: "12px", fontWeight: "700", letterSpacing: "1px", marginBottom: "4px" }}>
+                CURRENT LEVEL
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <span style={{ fontSize: "36px" }}>{levelInfo.current.emoji}</span>
+                <div>
+                  <div style={{ color: levelInfo.current.color, fontWeight: "900", fontSize: "22px" }}>
+                    Level {levelInfo.current.level} — {levelInfo.current.name}
                   </div>
-                )}
+                  {levelInfo.next && (
+                    <div style={{ color: "#8892a4", fontSize: "13px" }}>
+                      Next: {levelInfo.next.name} at {levelInfo.next.minXP.toLocaleString()} XP
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <div style={{ textAlign: "right" }}>
@@ -69,6 +75,7 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
               <div style={{ color: "#8892a4", fontSize: "13px" }}>Total XP</div>
             </div>
           </div>
+
           {levelInfo.next && (
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
@@ -107,11 +114,11 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
           padding: "16px",
           textAlign: "center"
         }}>
-          <img src="/check.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
+          <div style={{ fontSize: "24px", marginBottom: "8px" }}>✅</div>
+          <div style={{ color: "#00c853", fontWeight: "800", fontSize: "20px" }}>
             {userProfile?.tasksCompleted?.toLocaleString() || "0"}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "11px" }}>Tasks Completed</div>
+          <div style={{ color: "#8892a4", fontSize: "11px", marginTop: "4px" }}>Tasks Completed</div>
         </div>
         <div style={{
           background: "rgba(255,255,255,0.03)",
@@ -120,15 +127,15 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
           padding: "16px",
           textAlign: "center"
         }}>
-          <img src="/progress.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
+          <div style={{ fontSize: "24px", marginBottom: "8px" }}>🗺️</div>
+          <div style={{ color: "#0052ff", fontWeight: "800", fontSize: "20px" }}>
             {completedCount}/{totalDaily}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "11px" }}>Today Completed</div>
+          <div style={{ color: "#8892a4", fontSize: "11px", marginTop: "4px" }}>Today Completed</div>
         </div>
       </div>
 
-      {/* Row 3: Streak / Member Since (2×1) */}
+      {/* Row 3: Day Streak / Member Since (2×1) */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         <div style={{
           background: "rgba(255,255,255,0.03)",
@@ -137,11 +144,11 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
           padding: "16px",
           textAlign: "center"
         }}>
-          <img src="/streak.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
+          <div style={{ fontSize: "24px", marginBottom: "8px" }}>🔥</div>
+          <div style={{ color: "#f0b429", fontWeight: "800", fontSize: "20px" }}>
             {userProfile?.streakCount || "0"}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "11px" }}>Day Streak</div>
+          <div style={{ color: "#8892a4", fontSize: "11px", marginTop: "4px" }}>Day Streak</div>
         </div>
         <div style={{
           background: "rgba(255,255,255,0.03)",
@@ -150,41 +157,36 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
           padding: "16px",
           textAlign: "center"
         }}>
-          <img src="/calendar.svg" style={{ width: "24px", height: "24px", marginBottom: "6px" }} />
-          <div style={{ color: "white", fontWeight: "800", fontSize: "20px" }}>
+          <div style={{ fontSize: "24px", marginBottom: "8px" }}>📅</div>
+          <div style={{ color: "#a855f7", fontWeight: "800", fontSize: "20px" }}>
             {userProfile?.joinedAt
               ? new Date(userProfile.joinedAt * 1000).toLocaleDateString("en-US", { month: "short", year: "numeric" })
               : "-"}
           </div>
-          <div style={{ color: "#8892a4", fontSize: "11px" }}>Member Since</div>
+          <div style={{ color: "#8892a4", fontSize: "11px", marginTop: "4px" }}>Member Since</div>
         </div>
       </div>
 
       {/* Row 4: Leaderboard (1×1 full width) */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ marginTop: "16px" }}>
         <button
           onClick={() => setActiveTab("leaderboard")}
           style={{
-            background: "linear-gradient(135deg, #f0b429, #d69e2e)",
+            background: "linear-gradient(135deg, rgba(240,180,41,0.1), #f0b429)",
             border: "none",
             borderRadius: "16px",
-            padding: "16px 28px",
+            padding: "16px",
+            width: "100%",
             cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            boxShadow: "0 6px 20px rgba(240,180,41,0.3)",
             fontWeight: "800",
             fontSize: "16px",
-            color: "white",
-            width: "100%"
+            color: "#f0b429",
           }}
         >
-          <img src="/leaderboard.svg" style={{ width: "24px", height: "24px" }} />
-          Leaderboard
+          🏆 Leaderboard
         </button>
       </div>
 
     </div>
   );
-}
+      }
