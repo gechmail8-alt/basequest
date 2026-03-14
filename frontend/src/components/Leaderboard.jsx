@@ -71,7 +71,9 @@ export default function Leaderboard({ wallet }) {
           fontSize:     "14px",
           marginBottom: "16px",
         }}>
-          Contract not deployed yet — leaderboard will populate once live.
+          Unable to load leaderboard😪 
+          
+          please tap Refresh to try again.
         </div>
       )}
 
