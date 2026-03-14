@@ -66,7 +66,7 @@ export default function App() {
       {/* Mobile floating bottom nav */}
       <div style={{
         position: "fixed",
-        bottom: "18px", // pushed slightly upward
+        bottom: "26px", // moved more upward
         left: "50%",
         transform: "translateX(-50%)",
         width: "90%",
@@ -78,7 +78,7 @@ export default function App() {
         padding: "2px 0",
         backdropFilter: "blur(15px)",
         zIndex: 100,
-        boxShadow: "0 6px 10px rgba(0,0,0,0.35)", // shadow only below
+        boxShadow: "0 8px 12px -4px rgba(0,0,0,0.5)", // shadow only below
       }} className="mobile-nav">
 
         {/* Sliding highlight */}
