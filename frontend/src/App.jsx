@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useWallet }     from "./hooks/useWallet";
-import { useQuests }     from "./hooks/useQuests";
-import Navbar            from "./components/Navbar";
-import Dashboard         from "./components/Dashboard";
-import QuestBoard        from "./components/QuestBoard";
-import BossRaid          from "./components/BossRaid";
-import Leaderboard       from "./components/Leaderboard";
-import WalletAnalyzer    from "./components/WalletAnalyzer";
+import { useWallet } from "./hooks/useWallet";
+import { useQuests } from "./hooks/useQuests";
+import Navbar from "./components/Navbar";
+import Dashboard from "./components/Dashboard";
+import QuestBoard from "./components/QuestBoard";
+import BossRaid from "./components/BossRaid";
+import Leaderboard from "./components/Leaderboard";
+import WalletAnalyzer from "./components/WalletAnalyzer";
 
 const TABS = [
   { id: "dashboard",   label: "Dashboard",      icon: "🏠" },
@@ -25,12 +25,12 @@ export default function App() {
 
   const renderTab = () => {
     switch (activeTab) {
-      case "dashboard":   return <Dashboard    quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
-      case "quests":      return <QuestBoard   quests={quests} wallet={wallet} />;
-      case "bossraid":    return <BossRaid     wallet={wallet} />;
-      case "leaderboard": return <Leaderboard  wallet={wallet} />;
+      case "dashboard":   return <Dashboard quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
+      case "quests":      return <QuestBoard quests={quests} wallet={wallet} />;
+      case "bossraid":    return <BossRaid wallet={wallet} />;
+      case "leaderboard": return <Leaderboard wallet={wallet} />;
       case "analyzer":    return <WalletAnalyzer wallet={wallet} />;
-      default:            return <Dashboard    quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
+      default:            return <Dashboard quests={quests} wallet={wallet} setActiveTab={setActiveTab} />;
     }
   };
 
@@ -46,7 +46,7 @@ export default function App() {
       <Navbar wallet={walletWithProfile} />
 
       {/* Page content */}
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 16px 80px" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 16px 100px" }}>
         {renderTab()}
       </div>
 
@@ -78,47 +78,44 @@ export default function App() {
 
       {/* Mobile floating bottom nav */}
       <div style={{
-        display:        "flex",
-        position:       "fixed",
-        bottom:         12,
-        left:           "50%",
-        transform:      "translateX(-50%)",
-        background:     "rgba(10,11,15,0.95)",
-        borderRadius:   "24px",
-        padding:        "8px 12px",
-        backdropFilter: "blur(20px)",
-        zIndex:         100,
-        gap:            "8px",
-        maxWidth:       "500px",
+        display: "flex",
+        position: "fixed",
+        bottom: "16px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "rgba(10,11,15,0.95)",
+        borderRadius: "24px",
+        padding: "8px 16px",
+        gap: "12px",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+        zIndex: 100,
       }} className="mobile-nav">
-        {TABS.map(tab => {
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={{
-                flex:           1,
-                background:     isActive ? "rgba(0,82,255,0.2)" : "transparent",
-                borderRadius:   "16px",
-                border:         "none",
-                color:          isActive ? "#0052ff" : "#8892a4",
-                fontWeight:     isActive ? "700" : "400",
-                fontSize:       "12px",
-                cursor:         "pointer",
-                display:        "flex",
-                flexDirection:  "column",
-                alignItems:     "center",
-                gap:            "4px",
-                padding:        "6px 8px",
-                transition:     "all 0.2s",
-              }}
-            >
-              <span style={{ fontSize: "20px" }}>{tab.icon}</span>
-              <span>{tab.label.split(" ")[0]}</span>
-            </button>
-          );
-        })}
+
+        {TABS.map(tab => (
+          <div
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "8px 12px",
+              minWidth: "70px",
+              borderRadius: "16px",
+              background: activeTab === tab.id ? "linear-gradient(135deg, #0052ff, #0041cc)" : "transparent",
+              color: activeTab === tab.id ? "white" : "#8892a4",
+              fontWeight: activeTab === tab.id ? 700 : 400,
+              fontSize: "12px",
+              cursor: "pointer",
+              textAlign: "center",
+              transition: "all 0.2s",
+            }}
+          >
+            <span style={{ fontSize: "20px" }}>{tab.icon}</span>
+            <span>{tab.label}</span>
+          </div>
+        ))}
       </div>
 
       {/* Global styles */}
