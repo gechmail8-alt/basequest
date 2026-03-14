@@ -2,7 +2,7 @@ import { getLevelInfo, shortAddr } from "../utils/contracts";
 
 export default function Dashboard({ quests, wallet, setActiveTab }) {
   const { address, isConnected } = wallet;
-  const { userProfile, dailyTasks, completedCount, totalDaily, loading } = quests;
+  const { userProfile, completedCount, totalDaily, loading } = quests;
 
   const levelInfo = userProfile ? getLevelInfo(userProfile.totalXP) : null;
 
@@ -30,7 +30,6 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
 
   return (
     <div style={{ padding: "24px 0" }}>
-
       {/* Welcome */}
       <div style={{ marginBottom: "24px" }}>
         <h2 style={{ color: "white", fontSize: "22px", fontWeight: "800", margin: "0 0 4px" }}>
@@ -44,10 +43,10 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       {/* XP + Level card */}
       {levelInfo && (
         <div style={{
-          background:   "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
-          border:       "1px solid rgba(0,82,255,0.3)",
+          background: "linear-gradient(135deg, rgba(0,82,255,0.15), rgba(0,82,255,0.05))",
+          border: "1px solid rgba(0,82,255,0.3)",
           borderRadius: "20px",
-          padding:      "24px",
+          padding: "24px",
           marginBottom: "16px",
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "12px" }}>
@@ -135,55 +134,19 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
         ))}
       </div>
 
-      {/* Quick action buttons */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-        <button
-          onClick={() => setActiveTab("quests")}
-          style={{
-            background: "linear-gradient(135deg, #0052ff, #0041cc)",
-            border: "none",
-            borderRadius: "14px",
-            padding: "16px",
-            color: "white",
-            fontWeight: "800",
-            fontSize: "14px",
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(0,82,255,0.3)",
-          }}
-        >
-          🗺️ Daily Quests
-        </button>
-
-        <button
-          onClick={() => setActiveTab("bossraid")}
-          style={{
-            background: "linear-gradient(135deg, #ff3b3b, #cc0000)",
-            border: "none",
-            borderRadius: "14px",
-            padding: "16px",
-            color: "white",
-            fontWeight: "800",
-            fontSize: "14px",
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(255,59,59,0.3)",
-          }}
-        >
-          🐉 Boss Raid
-        </button>
-
-        {/* Leaderboard full-width */}
+      {/* Leaderboard button */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px" }}>
         <button
           onClick={() => setActiveTab("leaderboard")}
           style={{
-            gridColumn: "span 2",
-            background: "linear-gradient(135deg, rgba(240,180,41,0.1), #f0b429)",
-            border: "none",
-            borderRadius: "16px",
+            background: "rgba(240,180,41,0.1)",
+            border: "1px solid rgba(240,180,41,0.3)",
+            borderRadius: "14px",
             padding: "16px",
-            cursor: "pointer",
-            fontWeight: "800",
-            fontSize: "16px",
             color: "#f0b429",
+            fontWeight: "800",
+            fontSize: "14px",
+            cursor: "pointer",
           }}
         >
           🏆 Leaderboard
@@ -191,4 +154,4 @@ export default function Dashboard({ quests, wallet, setActiveTab }) {
       </div>
     </div>
   );
-      }
+}
