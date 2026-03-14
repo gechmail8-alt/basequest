@@ -11,16 +11,15 @@ import WalletAnalyzer from "./components/WalletAnalyzer";
 const TABS = [
   { id: "dashboard",   label: "Dashboard",      icon: "🏠" },
   { id: "quests",      label: "Quests",         icon: "🗺️" },
-  { id: "bossraid",    label: "Boss Raid",      icon: "🐉" },
+  { id: "bossraid",    label: "Boss",           icon: "🐉" },
   { id: "leaderboard", label: "Leaderboard",    icon: "🏆" },
-  { id: "analyzer",    label: "Wallet Analyzer",icon: "🔍" },
+  { id: "analyzer",    label: "Wallet",         icon: "🔍" },
 ];
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const wallet = useWallet();
   const quests = useQuests(wallet);
-
   const walletWithProfile = { ...wallet, userProfile: quests.userProfile };
 
   const renderTab = () => {
@@ -35,12 +34,7 @@ export default function App() {
   };
 
   return (
-    <div style={{
-      minHeight:  "100vh",
-      background: "#0a0b0f",
-      color:      "white",
-      fontFamily: "'Inter', sans-serif",
-    }}>
+    <div style={{ minHeight: "100vh", background: "#0a0b0f", color: "white", fontFamily: "'Inter', sans-serif" }}>
 
       {/* Navbar */}
       <Navbar wallet={walletWithProfile} />
@@ -51,12 +45,7 @@ export default function App() {
       </div>
 
       {/* Footer */}
-      <div style={{
-        borderTop:  "1px solid rgba(255,255,255,0.06)",
-        padding:    "24px 16px 100px",
-        textAlign:  "center",
-        marginTop:  "40px",
-      }}>
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "24px 16px 100px", textAlign: "center", marginTop: "40px" }}>
         <div style={{ display: "flex", justifyContent: "center", gap: "24px", marginBottom: "12px" }}>
           <a
             href="https://twitter.com/Jee_phoenix"
@@ -85,9 +74,9 @@ export default function App() {
         transform: "translateX(-50%)",
         background: "rgba(10,11,15,0.95)",
         borderRadius: "24px",
-        padding: "8px 16px",
-        gap: "12px",
-        boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+        padding: "6px 12px",
+        gap: "8px",
+        boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
         zIndex: 100,
       }} className="mobile-nav">
 
@@ -96,24 +85,24 @@ export default function App() {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             style={{
+              flex: 1,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              padding: "8px 12px",
-              minWidth: "70px",
+              padding: "6px 0",
               borderRadius: "16px",
               background: activeTab === tab.id ? "linear-gradient(135deg, #0052ff, #0041cc)" : "transparent",
               color: activeTab === tab.id ? "white" : "#8892a4",
               fontWeight: activeTab === tab.id ? 700 : 400,
-              fontSize: "12px",
+              fontSize: "11px",
               cursor: "pointer",
               textAlign: "center",
               transition: "all 0.2s",
             }}
           >
-            <span style={{ fontSize: "20px" }}>{tab.icon}</span>
-            <span>{tab.label}</span>
+            <span style={{ fontSize: "22px" }}>{tab.icon}</span>
+            <span style={{ marginTop: "2px" }}>{tab.label}</span>
           </div>
         ))}
       </div>
