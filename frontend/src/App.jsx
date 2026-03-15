@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useWallet } from "./hooks/useWallet";
 import { useQuests } from "./hooks/useQuests";
 import Navbar from "./components/Navbar";
@@ -19,17 +19,10 @@ const ICON_BLUE = "#0082FF";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [highlightPosition, setHighlightPosition] = useState(0);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [slideIndex, setSlideIndex] = useState(0);
   const wallet = useWallet();
   const quests = useQuests(wallet);
   const walletWithProfile = { ...wallet, userProfile: quests.userProfile };
-
-  useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const pages = [
     <Dashboard key="dashboard" quests={quests} wallet={wallet} setActiveTab={setActiveTab} />,
@@ -39,51 +32,53 @@ export default function App() {
     <Leaderboard key="leaderboard" wallet={wallet} />,
   ];
 
-  const pageIndex = pages.findIndex((_, i) => {
-    const ids = ["dashboard", "quests", "bossraid", "analyzer", "leaderboard"];
-    return ids[i] === activeTab;
-  });
+  // Map activeTab or leaderboard click to slideIndex
+  const getSlideIndex = (tab) => {
+    switch (tab) {
+      case "dashboard": return 0;
+      case "quests": return 1;
+      case "bossraid": return 2;
+      case "analyzer": return 3;
+      case "leaderboard": return 4;
+      default: return 0;
+    }
+  };
+
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+    setSlideIndex(getSlideIndex(tabId));
+  };
+
+  const openLeaderboard = () => {
+    setSlideIndex(getSlideIndex("leaderboard"));
+  };
 
   return (
     <div style={{ minHeight: "100vh", background: "#0a0b0f", color: "white", fontFamily: "'Inter', sans-serif" }}>
       <Navbar wallet={walletWithProfile} />
 
-      <div style={{ overflow: "hidden" }}>
+      <div style={{ overflow: "hidden", width: "100%" }}>
         <div
           style={{
             display: "flex",
-            width: screenWidth * pages.length,
-            transform: `translateX(-${pageIndex * screenWidth}px)`,
+            width: `${pages.length * 100}%`,
+            transform: `translateX(-${slideIndex * 100}%)`,
             transition: "transform 0.4s ease",
           }}
         >
           {pages.map((page, i) => (
-            <div key={i} style={{ width: screenWidth, flexShrink: 0 }}>
+            <div key={i} style={{ width: "100%", flexShrink: 0 }}>
               {page}
             </div>
           ))}
         </div>
       </div>
 
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "24px 16px 100px", textAlign: "center", marginTop: "40px" }}>
-        <div style={{ display: "flex", justifyContent: "center", gap: "24px", marginBottom: "12px" }}>
-          <a
-            href="https://twitter.com/Jee_phoenix"
-            target="_blank" rel="noreferrer"
-            style={{ color: "#8892a4", fontSize: "13px", fontWeight: "600", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}
-            onMouseEnter={e => e.currentTarget.style.color = "white"}
-            onMouseLeave={e => e.currentTarget.style.color = "#8892a4"}
-          >
-            𝕏 Contact Us
-          </a>
-        </div>
-        <div style={{ color: "#4a5568", fontSize: "12px", marginBottom: "4px" }}>
-          © 2026 BaseQuest™ — All rights reserved.
-        </div>
-        <div style={{ color: "#4a5568", fontSize: "11px" }}>
-          Built with 💙 on Base 🟦
-        </div>
-      </div>
+      {/* Example button for leaderboard inside dashboard */}
+      {/* You can also place it wherever needed */}
+      <button onClick={openLeaderboard} style={{ position: "fixed", top: 100, right: 20, zIndex: 200 }}>
+        Open Leaderboard
+      </button>
 
       <div style={{
         position: "fixed",
@@ -100,12 +95,11 @@ export default function App() {
         backdropFilter: "blur(18px)",
         zIndex: 100,
       }} className="mobile-nav">
-
         <div
           style={{
             position: "absolute",
             top: "2%",
-            left: `${highlightPosition}%`,
+            left: `${TABS.findIndex(t => t.id === activeTab) * (100 / TABS.length)}%`,
             width: `${100 / TABS.length}%`,
             height: "96%",
             borderRadius: "9999px",
@@ -115,14 +109,10 @@ export default function App() {
             zIndex: -1,
           }}
         />
-
         {TABS.map((tab, index) => (
           <div
             key={tab.id}
-            onClick={() => {
-              setActiveTab(tab.id);
-              setHighlightPosition(index * (100 / TABS.length));
-            }}
+            onClick={() => handleTabClick(tab.id)}
             style={{
               flex: 1,
               display: "flex",
@@ -130,9 +120,7 @@ export default function App() {
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              position: "relative",
               padding: "2px 0",
-              transform: "translateY(0px)",
             }}
           >
             <img
@@ -151,23 +139,10 @@ export default function App() {
               fontSize: "10px",
               fontWeight: 700,
               color: activeTab === tab.id ? ICON_BLUE : "white",
-              transform: "translateY(-1px)",
             }}>{tab.label}</span>
           </div>
         ))}
       </div>
-
-      <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0b0f; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-        ::-webkit-scrollbar-thumb { background: rgba(0,82,255,0.3); border-radius: 3px; }
-        input::placeholder { color: #4a5568; }
-        a { color: inherit; }
-        @media (min-width: 768px) { .mobile-nav { display: none !important; } }
-        @media (max-width: 767px) { .mobile-nav { display: flex !important; } }
-      `}</style>
     </div>
   );
 }
