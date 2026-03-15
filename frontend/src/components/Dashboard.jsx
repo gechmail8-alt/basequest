@@ -43,31 +43,21 @@ export default function Dashboard({ quests, wallet, setPage }) {
   if (!isConnected) {
     return (
       <div style={{ padding: "60px 20px", textAlign: "center" }}>
-        <div
+        <div style={{ fontSize: "72px", marginBottom: "20px", lineHeight: 1 }}>🟦</div>
+        <h1
           style={{
-            ...glassBlue,
-            padding: "48px 32px",
-            display: "inline-block",
-            maxWidth: "380px",
-            width: "100%",
+            color: "white",
+            fontSize: "24px",
+            fontWeight: "900",
+            margin: "0 0 12px",
+            letterSpacing: "-0.5px",
           }}
         >
-          <div style={{ fontSize: "72px", marginBottom: "20px", lineHeight: 1 }}>🟦</div>
-          <h1
-            style={{
-              color: "white",
-              fontSize: "24px",
-              fontWeight: "900",
-              margin: "0 0 12px",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            Skill issue if you're not on chain yet.
-          </h1>
-          <p style={{ color: "#8892a4", fontSize: "15px", margin: 0, lineHeight: 1.6 }}>
-            Stack XP. Build legacy. Eat the airdrop.
-          </p>
-        </div>
+          Skill issue if you're not on chain yet.
+        </h1>
+        <p style={{ color: "#8892a4", fontSize: "15px", margin: 0, lineHeight: 1.6 }}>
+          Stack XP. Build legacy. Eat the airdrop.
+        </p>
       </div>
     );
   }
