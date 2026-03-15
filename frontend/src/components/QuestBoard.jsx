@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import { getCoreContract, TASKS, SWAP_PLATFORMS, BRIDGE_PLATFORMS, DEPLOY_PLATFORMS } from "../utils/contracts";
 
-export function useQuests(wallet) {
+export default function useQuests(wallet) {
   const { address, signer, provider, isConnected } = wallet;
 
   const [dailyTasks,  setDailyTasks]  = useState({});
