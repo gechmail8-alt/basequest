@@ -32,9 +32,10 @@ export default function App() {
     dashboard: 0,
     quests: 1,
     bossraid: 2,
-    analyzer: 3,
-    leaderboard: 4
+    analyzer: 3
   };
+
+  const isLeaderboard = page === "leaderboard";
 
   return (
     <div
@@ -54,39 +55,50 @@ export default function App() {
           maxWidth: "1100px",
           margin: "0 auto",
           padding: "0 16px 100px",
-          overflow: "hidden"
+          overflow: "hidden",
+          position: "relative"
         }}
       >
 
         <div
           style={{
             display: "flex",
-            width: "500%",
-            transform: `translateX(-${pageIndex[page] * 20}%)`,
+            width: "400%",
+            transform: isLeaderboard
+              ? "translateX(100%)"
+              : `translateX(-${pageIndex[page] * 25}%)`,
             transition: "transform 0.35s ease"
           }}
         >
 
-          <div style={{ width: "20%" }}>
+          <div style={{ width: "25%" }}>
             <Dashboard quests={quests} wallet={wallet} setPage={setPage} />
           </div>
 
-          <div style={{ width: "20%" }}>
+          <div style={{ width: "25%" }}>
             <QuestBoard quests={quests} wallet={wallet} />
           </div>
 
-          <div style={{ width: "20%" }}>
+          <div style={{ width: "25%" }}>
             <BossRaid wallet={wallet} />
           </div>
 
-          <div style={{ width: "20%" }}>
+          <div style={{ width: "25%" }}>
             <WalletAnalyzer wallet={wallet} />
           </div>
 
-          <div style={{ width: "20%" }}>
-            <Leaderboard wallet={wallet} />
-          </div>
+        </div>
 
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: isLeaderboard ? "0%" : "-100%",
+            width: "100%",
+            transition: "left 0.35s ease"
+          }}
+        >
+          <Leaderboard wallet={wallet} />
         </div>
 
       </div>
