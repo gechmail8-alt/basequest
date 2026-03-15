@@ -31,6 +31,13 @@ const Badge = ({ label, color, bg }) => (
   <span style={{ background: bg, color, fontSize: "10px", fontWeight: 700, padding: "2px 7px", borderRadius: 20 }}>{label}</span>
 );
 
+const Chevron = ({ open, size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+    style={{ transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "rotate(0deg)", display: "block" }}>
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
 export default function QuestBoard({ quests, wallet }) {
   const { isConnected } = wallet;
   const {
@@ -56,19 +63,16 @@ export default function QuestBoard({ quests, wallet }) {
   }, []);
 
   const m = isMobile;
-  const handleField    = (id, field, val) => setFieldValues(p => ({ ...p, [id]: { ...p[id], [field]: val } }));
-  const handleComplete = async (e, taskId) => {
-    e.stopPropagation();
-    await completeTask(taskId, fieldValues[taskId] || {});
-  };
+  const handleField = (id, field, val) => setFieldValues(p => ({ ...p, [id]: { ...p[id], [field]: val } }));
 
   const renderSubTasks = (platforms, groupId) => (
     <div style={{ marginTop: 12 }}>
       <div
         onClick={e => { e.stopPropagation(); setExpandedSubs(p => ({ ...p, [groupId]: !p[groupId] })); }}
-        style={{ color: "#4da6ff", fontSize: "12px", fontWeight: 700, cursor: "pointer", marginBottom: 8 }}
+        style={{ color: "#4da6ff", fontSize: "12px", fontWeight: 700, cursor: "pointer", marginBottom: 8, display: "flex", alignItems: "center", gap: 6 }}
       >
-        {expandedSubs[groupId] ? "▲" : "▼"} Platform sub-tasks (+50 XP each)
+        <Chevron open={!!expandedSubs[groupId]} size={13} />
+        Platform sub-tasks (+50 XP each)
       </div>
 
       {expandedSubs[groupId] && (
@@ -88,7 +92,7 @@ export default function QuestBoard({ quests, wallet }) {
                     Go ↗
                   </a>
                   <button
-                    onClick={e => { e.stopPropagation(); completeTask(p.id); }}
+                    onClick={e => { e.stopPropagation(); completeTask(p.id, {}); }}
                     disabled={done || txPending}
                     style={{ background: done ? "rgba(0,200,83,0.2)" : `${p.color}22`, border: `1px solid ${done ? "rgba(0,200,83,0.4)" : p.color + "44"}`, borderRadius: 8, padding: "4px 10px", color: done ? "#00c853" : p.color, fontSize: "11px", fontWeight: 700, cursor: done || txPending ? "not-allowed" : "pointer" }}
                   >
@@ -96,15 +100,15 @@ export default function QuestBoard({ quests, wallet }) {
                   </button>
                 </div>
 
-                {/* Remix guide */}
                 {p.id === "deployRemix" && (
                   <div style={{ marginTop: 6 }}>
                     <div
                       onClick={e => { e.stopPropagation(); setShowGuide(v => !v); }}
                       style={{ color: "#f0b429", fontSize: "12px", fontWeight: 700, cursor: "pointer", padding: "7px 12px", background: "rgba(240,180,41,0.06)", border: "1px solid rgba(240,180,41,0.15)", borderRadius: 8, display: "flex", alignItems: "center", gap: 6 }}
                     >
-                      <Icon src="/guide.svg" size={14} style={{ opacity: 0.8 }} />
-                      {showGuide ? "▲ Hide" : "▼ Show"} step-by-step Remix guide
+                      <Icon src="/guide.svg" size={13} style={{ opacity: 0.8 }} />
+                      <span>{showGuide ? "Hide" : "Show"} step-by-step Remix guide</span>
+                      <Chevron open={showGuide} size={13} />
                     </div>
                     {showGuide && (
                       <div style={{ ...gBase, padding: "14px", marginTop: 6, display: "flex", flexDirection: "column", gap: 12 }}>
@@ -163,7 +167,7 @@ export default function QuestBoard({ quests, wallet }) {
       {lastTx?.status === "success" && (
         <div style={{ background: "rgba(0,200,83,0.1)", border: "1px solid rgba(0,200,83,0.3)", borderRadius: 12, padding: "11px 14px", marginBottom: 12, color: "#00c853", fontWeight: 600, fontSize: m ? "12px" : "13px", display: "flex", alignItems: "center", gap: 8 }}>
           <Icon src="/check.svg" size={16} />
-          {lastTx.msg}{" "}
+          {lastTx.msg}
           <a href={`https://basescan.org/tx/${lastTx.hash}`} target="_blank" rel="noreferrer" style={{ color: "#00c853", fontSize: "11px", marginLeft: "auto" }}>View tx ↗</a>
         </div>
       )}
@@ -183,7 +187,7 @@ export default function QuestBoard({ quests, wallet }) {
           return (
             <div key={task.id} style={{ ...(isDone ? gGreen : gBase), overflow: "hidden", transition: "all 0.2s" }}>
 
-              {/* Task header row */}
+              {/* Task header — only this div toggles expand */}
               <div
                 onClick={() => !task.auto && !isDone && setExpandedTask(expanded ? null : task.id)}
                 style={{ padding: m ? "12px 14px" : "14px 18px", display: "flex", alignItems: "center", gap: m ? 10 : 14, cursor: task.auto || isDone ? "default" : "pointer" }}
@@ -195,10 +199,10 @@ export default function QuestBoard({ quests, wallet }) {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
                     <span className="dh" style={{ color: "white", fontWeight: 800, fontSize: m ? "13px" : "14px" }}>{task.name}</span>
-                    {isDone            && <Badge label="DONE"      color="#00c853" bg="rgba(0,200,83,0.2)" />}
-                    {task.auto         && <Badge label="AUTO"      color="#f0b429" bg="rgba(240,180,41,0.2)" />}
-                    {task.oneTime && !isDone && <Badge label="ONE-TIME"  color="#a855f7" bg="rgba(168,85,247,0.2)" />}
-                    {task.hasSubs && !isDone && <Badge label="+BONUS XP" color="#00d4ff" bg="rgba(0,82,255,0.2)" />}
+                    {isDone                  && <Badge label="DONE"      color="#00c853" bg="rgba(0,200,83,0.2)" />}
+                    {task.auto               && <Badge label="AUTO"      color="#f0b429" bg="rgba(240,180,41,0.2)" />}
+                    {task.oneTime && !isDone  && <Badge label="ONE-TIME"  color="#a855f7" bg="rgba(168,85,247,0.2)" />}
+                    {task.hasSubs && !isDone  && <Badge label="+BONUS XP" color="#00d4ff" bg="rgba(0,82,255,0.2)" />}
                   </div>
                   <div className="db" style={{ color: "#8892a4", fontSize: m ? "11px" : "12px" }}>{task.description}</div>
                 </div>
@@ -209,11 +213,13 @@ export default function QuestBoard({ quests, wallet }) {
                 </div>
 
                 {!task.auto && !isDone && (
-                  <div style={{ color: "#5a6478", fontSize: 16, flexShrink: 0 }}>{expanded ? "▲" : "▼"}</div>
+                  <div style={{ color: "#5a6478", flexShrink: 0 }}>
+                    <Chevron open={expanded} size={16} />
+                  </div>
                 )}
               </div>
 
-              {/* Expanded area */}
+              {/* Expanded body — separate div, no onClick */}
               {expanded && !isDone && !task.auto && (
                 <div style={{ padding: m ? "0 14px 14px" : "0 18px 18px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
 
@@ -226,9 +232,8 @@ export default function QuestBoard({ quests, wallet }) {
                         type="text"
                         placeholder={task.fieldPlaceholder}
                         value={fieldValues[task.id]?.[task.field] || ""}
-                        onChange={e => { e.stopPropagation(); handleField(task.id, task.field, e.target.value); }}
-                        onClick={e => e.stopPropagation()}
-                        style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "9px 12px", color: "white", fontSize: "13px", outline: "none", fontFamily: "DM Sans, sans-serif" }}
+                        onChange={e => handleField(task.id, task.field, e.target.value)}
+                        style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "9px 12px", color: "white", fontSize: "13px", outline: "none", fontFamily: "DM Sans, sans-serif", boxSizing: "border-box" }}
                       />
                     </div>
                   )}
@@ -237,8 +242,9 @@ export default function QuestBoard({ quests, wallet }) {
                   {task.id === "swap"   && renderSubTasks(SWAP_PLATFORMS,   "swap")}
                   {task.id === "bridge" && renderSubTasks(BRIDGE_PLATFORMS, "bridge")}
 
+                  {/* Complete button — plain onClick, no stopPropagation needed since parent has no onClick */}
                   <button
-                    onClick={e => handleComplete(e, task.id)}
+                    onClick={() => completeTask(task.id, fieldValues[task.id] || {})}
                     disabled={txPending}
                     style={{ width: "100%", marginTop: 12, background: txPending ? "rgba(0,82,255,0.3)" : "linear-gradient(135deg,#0052ff,#0041cc)", border: "none", borderRadius: 12, padding: m ? "11px" : "13px", color: "white", fontWeight: 800, fontSize: m ? "13px" : "14px", cursor: txPending ? "not-allowed" : "pointer", boxShadow: txPending ? "none" : "0 4px 20px rgba(0,82,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: "Syne, sans-serif" }}
                   >
@@ -249,10 +255,11 @@ export default function QuestBoard({ quests, wallet }) {
                   </button>
                 </div>
               )}
+
             </div>
           );
         })}
       </div>
     </div>
   );
-                             }
+}
