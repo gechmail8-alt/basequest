@@ -24,6 +24,7 @@ export default function App() {
 
   const wallet = useWallet();
   const quests = useQuests(wallet);
+
   const walletWithProfile = { ...wallet, userProfile: quests.userProfile };
 
   const pageIndex = {
@@ -57,27 +58,25 @@ export default function App() {
           width: "100%"
         }}
       >
-        {/* Main sliding pages */}
+        {/* Main pages container */}
         <div
           style={{
-            display: "flex",
+            display: isLeaderboard ? "none" : "flex", // hide flex container when leaderboard
             width: "400%",
-            transform: isLeaderboard
-              ? `translateX(-${pageIndex[page] * 25}%)`
-              : `translateX(-${pageIndex[page] * 25}%)`,
+            transform: `translateX(-${pageIndex[page] * 100}%)`, // slide full width per page
             transition: "transform 0.35s ease"
           }}
         >
-          <div style={{ width: "25%" }}>
+          <div style={{ width: "100%" }}>
             <Dashboard quests={quests} wallet={wallet} setPage={setPage} />
           </div>
-          <div style={{ width: "25%" }}>
+          <div style={{ width: "100%" }}>
             <QuestBoard quests={quests} wallet={wallet} />
           </div>
-          <div style={{ width: "25%" }}>
+          <div style={{ width: "100%" }}>
             <BossRaid wallet={wallet} />
           </div>
-          <div style={{ width: "25%" }}>
+          <div style={{ width: "100%" }}>
             <WalletAnalyzer wallet={wallet} />
           </div>
         </div>
@@ -87,12 +86,9 @@ export default function App() {
           <div
             style={{
               width: "100%",
-              position: "absolute",
-              top: 0,
+              position: "relative",
               left: 0,
-              zIndex: 10,
-              transition: "opacity 0.35s ease",
-              background: "#0a0b0f"
+              transition: "left 0.35s ease"
             }}
           >
             <Leaderboard wallet={wallet} />
@@ -132,6 +128,7 @@ export default function App() {
             zIndex: -1
           }}
         />
+
         {TABS.map((tab, index) => (
           <div
             key={tab.id}
@@ -175,4 +172,4 @@ export default function App() {
       </div>
     </div>
   );
-}
+              }
