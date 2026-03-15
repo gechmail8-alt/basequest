@@ -71,7 +71,7 @@ export default function WalletAnalyzer({ wallet }) {
 
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: m ? 14 : 20 }}>
-        <Icon src="/search.svg" size={m ? 40 : 46} style={{ filter: "brightness(0) invert(1)", opacity: 0.85 }} />
+        <Icon src="/wallet.svg" size={m ? 40 : 46} style={{ filter: "brightness(0) invert(1)", opacity: 0.85 }} />
         <div>
           <h2 className="dh" style={{ color: "white", fontSize: m ? "17px" : "22px", fontWeight: 900, margin: "0 0 2px" }}>
             Wallet Analyzer
